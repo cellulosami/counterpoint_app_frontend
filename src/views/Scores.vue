@@ -2,11 +2,43 @@
   <div class="home">
     <h1>{{ message }}</h1>
     <p>{{ currentScore }}</p>
-    <button v-on:click="lengthSelect(8)">length 8</button>
-    <button v-on:click="lengthSelect(10)">length 10</button>
+    <div id="label"></div>
+    <select id="length-select" class="btn" style="box-shadow: 0 2px 5px rgb(15 17 17 / 20%);" v-model="inputLength">
+      <option>
+        8
+      </option>
+      <option>
+        9
+      </option>
+      <option>
+        10
+      </option>
+      <option>
+        11
+      </option>
+      <option>
+        12
+      </option>
+      <option>
+        13
+      </option>
+      <option>
+        14
+      </option>
+    </select>
     <button v-on:click="scoresCreate">Create!</button>
+
+
+
+
   </div>
 </template>
+
+<style>
+#length-select {
+  border: 1px solid lightgray;
+}
+</style>
 
 <script>
 import axios from "axios";
@@ -27,7 +59,7 @@ export default {
     scoresCreate: function () {
       console.log("creating...");
       let params = {
-        length: this.inputLength
+        length: parseInt(this.inputLength)
       }
       axios
         .post("http://localhost:3000/api/scores", params)
@@ -36,9 +68,6 @@ export default {
           this.currentScore = response.data;
         })
     },
-    lengthSelect: function (number) {
-      this.inputLength = number;
-    }
   }
 }
 </script>

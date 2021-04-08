@@ -1,9 +1,11 @@
 <template>
   <div class="home">
+    <br />
     <h1>{{ message }}</h1>
     <p>{{ currentScore }}</p>
     <div id="label"></div>
-    <select id="length-select" class="btn" style="box-shadow: 0 2px 5px rgb(15 17 17 / 20%);" v-model="inputLength">
+    <h5 id="measures"> Measures:
+    <select id="length-select" class="dropdown" v-model="inputLength">
       <option>
         8
       </option>
@@ -26,17 +28,34 @@
         14
       </option>
     </select>
-    <button v-on:click="scoresCreate">Create!</button>
-
-
-
-
+    </h5>
+    <button v-on:click="scoresCreate" class="btn" id="generate">Generate!</button>
+    <br />
+    <br />
   </div>
 </template>
 
 <style>
 #length-select {
-  border: 1px solid lightgray;
+  color: #1b262c;
+  background-color: #bbe1fa;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 30%);
+  border-radius: 3px;
+}
+
+#generate {
+  color: #1b262c;
+  background-color: #f0834d;
+  font-weight: bold;
+  transition: ease 0.2s;
+}
+
+#generate:hover {
+  background-color: #f5bd6a;
+}
+
+#measures {
+  margin-bottom: 20px;
 }
 </style>
 

@@ -60,7 +60,7 @@
   color: black;
   background-color: hsl(24, 10%, 90%);
   border-radius: 5px;
-  padding: 32px;
+  padding-left: 32px;
   Height: 216px;
   width: 1024px;
 }
@@ -105,10 +105,20 @@ export default {
       currentScore: {},
       inputLength: 8,
       VF: Vex.Flow,
+      div: "",
+      renderer: "",
+      context: "",
+      staveMeasure1: "",
+      notesMeasure1: "",
+      staveMeasure2: "",
+      notesMeasure2: "",
     }
   },
   mounted: function () {
-
+    this.div = document.getElementById("boo");
+    this.renderer = new this.VF.Renderer(this.div, this.VF.Renderer.Backends.SVG);
+    this.renderer.resize(1000, 400);
+    this.context = this.renderer.getContext();
   },
   methods: {
     scoresCreate: function () {
@@ -122,42 +132,37 @@ export default {
           console.log(response.data);
           this.currentScore = response.data;
 
-          var VF = this.VF
-          var div = document.getElementById("boo")
-          var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
-          renderer.resize(400, 400);
-          var context = renderer.getContext();
+          this.addFirstMeasure();
 
-          var staveMeasure1 = new VF.Stave(0, 0, 160);
-          staveMeasure1.addClef("treble").addTimeSignature("4/4");
-          staveMeasure1.setContext(context).draw();
-
-          var notesMeasure1 = [
-            new VF.StaveNote({ keys: ["c/4"], duration: "w" }),
-          ];
-
-          var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
-          voice.addTickables(notesMeasure1);
-
-          var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 100);
-
-          //voice.draw(context, stave);
-          VF.Formatter.FormatAndDraw(context, staveMeasure1, notesMeasure1);
-
-          var staveMeasure2 = new Vex.Flow.Stave(
-            staveMeasure1.width + staveMeasure1.x,
-            0,
-            120
-          );
-          staveMeasure2.setContext(context).draw();
-
-          var notesMeasure2 = [
-            new VF.StaveNote({ keys: ["d/4"], duration: "w" }),
-          ];
-
-           Vex.Flow.Formatter.FormatAndDraw(context, staveMeasure2, notesMeasure2);
+          this.addAdditionalMeasure();
         })
     },
+    addFirstMeasure: function () {
+      console.log("first...");
+      this.staveMeasure1 = new this.VF.Stave(0, 0, 160);
+      this.staveMeasure1.addClef("treble").addTimeSignature("4/4");
+      this.staveMeasure1.setContext(this.context).draw();
+
+      this.notesMeasure1 = [
+        new this.VF.StaveNote({ keys: ["c/4"], duration: "w" }),
+      ];
+
+      this.VF.Formatter.FormatAndDraw(this.context, this.staveMeasure1, this.notesMeasure1);
+    },
+    addAdditionalMeasure: function () {
+      this.staveMeasure2 = new Vex.Flow.Stave(
+        this.staveMeasure1.width + this.staveMeasure1.x,
+        0,
+        120
+      );
+      this.staveMeasure2.setContext(this.context).draw();
+
+      this.notesMeasure2 = [
+        new this.VF.StaveNote({ keys: ["d/4"], duration: "w" }),
+      ];
+
+        Vex.Flow.Formatter.FormatAndDraw(this.context, this.staveMeasure2, this.notesMeasure2);
+    }
   }
 }
 </script>

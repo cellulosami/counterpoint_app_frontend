@@ -112,6 +112,7 @@ export default {
       notesCurrentMeasure: "",
       stavePreviousMeasure: "",
       noteIndex: 1,
+      measureOffset: 0,
     }
   },
   mounted: function () {
@@ -136,16 +137,24 @@ export default {
     },
 
     drawStave: function () {
-      this.addFirstMeasure();
+      this.addFirstStave();
 
       this.noteIndex = 1
       while (this.noteIndex <= (this.currentScore.notes.length / 2)) {
         this.addAdditionalMeasure();
         this.noteIndex++;
       }
+
+      this.addSecondStave();
+      this.noteIndex++;
+
+      while (this.noteIndex < this.currentScore.notes.length) {
+        this.addAdditionalMeasure();
+        this.noteIndex++;
+      }
     },
 
-    addFirstMeasure: function () {
+    addFirstStave: function () {
       this.staveCurrentMeasure = new this.VF.Stave(0, 0, 160);
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
       this.staveCurrentMeasure.setContext(this.context).draw();
@@ -154,12 +163,13 @@ export default {
       ];
       this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
       this.stavePreviousMeasure = this.staveCurrentMeasure
+      this.measureOffset = 0
     },
 
     addAdditionalMeasure: function () {
       this.staveCurrentMeasure = new Vex.Flow.Stave(
         this.stavePreviousMeasure.width + this.stavePreviousMeasure.x,
-        0,
+        this.measureOffset,
         120
       );
       this.staveCurrentMeasure.setContext(this.context).draw();
@@ -168,6 +178,18 @@ export default {
       ];
       Vex.Flow.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
       this.stavePreviousMeasure = this.staveCurrentMeasure
+    },
+
+    addSecondStave: function () {
+      this.staveCurrentMeasure = new this.VF.Stave(0, 100, 130);
+      this.staveCurrentMeasure.addClef("treble");
+      this.staveCurrentMeasure.setContext(this.context).draw();
+      this.notesCurrentMeasure = [
+        new this.VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }),
+      ];
+      this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.stavePreviousMeasure = this.staveCurrentMeasure
+      this.measureOffset = 100
     }
   }
 }

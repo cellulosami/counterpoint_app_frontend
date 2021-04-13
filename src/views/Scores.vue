@@ -39,54 +39,6 @@
         <button v-on:click="scoresCreate" class="btn" id="generate">Generate!</button>
       </div>
       <div id="staff-container">
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
-        <div class="bar-regular measure-container">
-
-        </div>
       </div>
     </div>
   </div>
@@ -96,41 +48,24 @@
 #main-body {
   padding: 32px;
   margin: 2%;
-  width: 96%;
+  width: 1080px;
   background-color: #0f4c75;
   box-shadow: 0 5px 12px rgb(0 0 0 / 30%);
   border-radius: 20px;
 }
 
-.measure-container {
-  float: left;
-  background: repeating-linear-gradient(black, black 2px, hsl(24, 10%, 90%) 2px, hsl(24, 10%, 90%) 14.5px);
-  height: 60px;
-  width: 120px;
-  font-size: 10rem;
-  border-left: 2px solid #000;
-  border-right: 2px solid #000;
-  margin-bottom: 32px;
-}
-
 #staff-container {
+  color: black;
   background-color: hsl(24, 10%, 90%);
   border-radius: 5px;
   padding: 32px;
   Height: 216px;
-  width: 100%;
-}
-
-#staff-container.after {
-    content: ".";
-    display:block;
-    height:0;
-    clear:both;
-    visibility:hidden;
+  width: 1024px;
 }
 
 #generator-container {
   margin-bottom: 2%;
+  text-align: center;
 }
 
 #length-select {

@@ -122,24 +122,40 @@ export default {
           console.log(response.data);
           this.currentScore = response.data;
 
-          // Create a VexFlow renderer attaced to the DIV element "boo"
-          var vf = new this.VF.Factory({renderer: {elementId: 'boo'}});
-          var score = vf.EasyScore();
-          var system = vf.System();
+          var VF = this.VF
+          var div = document.getElementById("boo")
+          var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+          renderer.resize(400, 400);
+          var context = renderer.getContext();
 
-          // Create a 4/4 treble stave, and add two parallel voices
-          system.addStave({
-            voices: [
-              // Top voice has 4 quarter notes with stems up
-              score.voice(score.notes('C#5/q, B4, B4, G#4', {stem: 'up'})),
-            
-              // Bottom voice has two half notes, with the stem down
-              score.voice(score.notes('C#4/h, C#4', {stem: 'down'}))
-            ]
-          }).addClef('treble').addTimeSignature('4/4');
+          var staveMeasure1 = new VF.Stave(0, 0, 160);
+          staveMeasure1.addClef("treble").addTimeSignature("4/4");
+          staveMeasure1.setContext(context).draw();
 
-          // Draw it!
-          vf.draw();
+          var notesMeasure1 = [
+            new VF.StaveNote({ keys: ["c/4"], duration: "w" }),
+          ];
+
+          var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
+          voice.addTickables(notesMeasure1);
+
+          var formatter = new VF.Formatter().joinVoices([voice]).format([voice], 100);
+
+          //voice.draw(context, stave);
+          VF.Formatter.FormatAndDraw(context, staveMeasure1, notesMeasure1);
+
+          var staveMeasure2 = new Vex.Flow.Stave(
+            staveMeasure1.width + staveMeasure1.x,
+            0,
+            120
+          );
+          staveMeasure2.setContext(context).draw();
+
+          var notesMeasure2 = [
+            new VF.StaveNote({ keys: ["d/4"], duration: "w" }),
+          ];
+
+           Vex.Flow.Formatter.FormatAndDraw(context, staveMeasure2, notesMeasure2);
         })
     },
   }

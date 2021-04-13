@@ -111,6 +111,7 @@ export default {
       staveCurrentMeasure: "",
       notesCurrentMeasure: "",
       stavePreviousMeasure: "",
+      noteIndex: 1,
     }
   },
   mounted: function () {
@@ -130,12 +131,18 @@ export default {
         .then(response => {
           console.log(response.data);
           this.currentScore = response.data;
-
-          this.addFirstMeasure();
-
-          this.addAdditionalMeasure();
-          this.addAdditionalMeasure();
+          this.drawStave();
         })
+    },
+
+    drawStave: function () {
+      this.addFirstMeasure();
+
+      this.noteIndex = 1
+      while (this.noteIndex <= (this.currentScore.notes.length / 2)) {
+        this.addAdditionalMeasure();
+        this.noteIndex++;
+      }
     },
 
     addFirstMeasure: function () {
@@ -143,7 +150,7 @@ export default {
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
       this.staveCurrentMeasure.setContext(this.context).draw();
       this.notesCurrentMeasure = [
-        new this.VF.StaveNote({ keys: ["c/4"], duration: "w" }),
+        new this.VF.StaveNote({ keys: [this.currentScore.notes[0]], duration: "w" }),
       ];
       this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
       this.stavePreviousMeasure = this.staveCurrentMeasure
@@ -157,7 +164,7 @@ export default {
       );
       this.staveCurrentMeasure.setContext(this.context).draw();
       this.notesCurrentMeasure = [
-        new this.VF.StaveNote({ keys: ["d/4"], duration: "w" }),
+        new this.VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }),
       ];
       Vex.Flow.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
       this.stavePreviousMeasure = this.staveCurrentMeasure

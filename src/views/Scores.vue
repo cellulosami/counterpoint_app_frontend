@@ -140,7 +140,7 @@ export default {
       this.addFirstStave();
 
       this.noteIndex = 1
-      while (this.noteIndex <= (this.currentScore.notes.length / 2)) {
+      while (this.noteIndex < (this.currentScore.notes.length / 2)) {
         this.addAdditionalMeasure();
         this.noteIndex++;
       }
@@ -155,7 +155,7 @@ export default {
     },
 
     addFirstStave: function () {
-      this.staveCurrentMeasure = new this.VF.Stave(0, 0, 160);
+      this.staveCurrentMeasure = new this.VF.Stave(0, 0, 150);
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
       this.staveCurrentMeasure.setContext(this.context).draw();
       this.notesCurrentMeasure = [
@@ -170,7 +170,7 @@ export default {
       this.staveCurrentMeasure = new Vex.Flow.Stave(
         this.stavePreviousMeasure.width + this.stavePreviousMeasure.x,
         this.measureOffset,
-        120
+        110
       );
       this.staveCurrentMeasure.setContext(this.context).draw();
       this.notesCurrentMeasure = [
@@ -181,7 +181,7 @@ export default {
     },
 
     addSecondStave: function () {
-      this.staveCurrentMeasure = new this.VF.Stave(0, 100, 130);
+      this.staveCurrentMeasure = new this.VF.Stave(0, 100, 120);
       this.staveCurrentMeasure.addClef("treble");
       this.staveCurrentMeasure.setContext(this.context).draw();
       this.notesCurrentMeasure = [

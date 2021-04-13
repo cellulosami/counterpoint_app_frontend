@@ -108,10 +108,9 @@ export default {
       div: "",
       renderer: "",
       context: "",
-      staveMeasure1: "",
-      notesMeasure1: "",
-      staveMeasure2: "",
-      notesMeasure2: "",
+      staveCurrentMeasure: "",
+      notesCurrentMeasure: "",
+      stavePreviousMeasure: "",
     }
   },
   mounted: function () {
@@ -135,33 +134,33 @@ export default {
           this.addFirstMeasure();
 
           this.addAdditionalMeasure();
+          this.addAdditionalMeasure();
         })
     },
-    addFirstMeasure: function () {
-      console.log("first...");
-      this.staveMeasure1 = new this.VF.Stave(0, 0, 160);
-      this.staveMeasure1.addClef("treble").addTimeSignature("4/4");
-      this.staveMeasure1.setContext(this.context).draw();
 
-      this.notesMeasure1 = [
+    addFirstMeasure: function () {
+      this.staveCurrentMeasure = new this.VF.Stave(0, 0, 160);
+      this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
+      this.staveCurrentMeasure.setContext(this.context).draw();
+      this.notesCurrentMeasure = [
         new this.VF.StaveNote({ keys: ["c/4"], duration: "w" }),
       ];
-
-      this.VF.Formatter.FormatAndDraw(this.context, this.staveMeasure1, this.notesMeasure1);
+      this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.stavePreviousMeasure = this.staveCurrentMeasure
     },
+
     addAdditionalMeasure: function () {
-      this.staveMeasure2 = new Vex.Flow.Stave(
-        this.staveMeasure1.width + this.staveMeasure1.x,
+      this.staveCurrentMeasure = new Vex.Flow.Stave(
+        this.stavePreviousMeasure.width + this.stavePreviousMeasure.x,
         0,
         120
       );
-      this.staveMeasure2.setContext(this.context).draw();
-
-      this.notesMeasure2 = [
+      this.staveCurrentMeasure.setContext(this.context).draw();
+      this.notesCurrentMeasure = [
         new this.VF.StaveNote({ keys: ["d/4"], duration: "w" }),
       ];
-
-        Vex.Flow.Formatter.FormatAndDraw(this.context, this.staveMeasure2, this.notesMeasure2);
+      Vex.Flow.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.stavePreviousMeasure = this.staveCurrentMeasure
     }
   }
 }

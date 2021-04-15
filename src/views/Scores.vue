@@ -157,11 +157,7 @@ export default {
     addFirstStave: function () {
       this.staveCurrentMeasure = new this.VF.Stave(0, 0, 150);
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
-      this.staveCurrentMeasure.setContext(this.context).draw();
-      this.notesCurrentMeasure = [
-        new this.VF.StaveNote({ keys: [this.currentScore.notes[0]], duration: "w" }),
-      ];
-      this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.draw();
       this.stavePreviousMeasure = this.staveCurrentMeasure
       this.measureOffset = 0
     },
@@ -172,24 +168,24 @@ export default {
         this.measureOffset,
         110
       );
-      this.staveCurrentMeasure.setContext(this.context).draw();
-      this.notesCurrentMeasure = [
-        new this.VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }),
-      ];
-      Vex.Flow.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.draw();
       this.stavePreviousMeasure = this.staveCurrentMeasure
     },
 
     addSecondStave: function () {
       this.staveCurrentMeasure = new this.VF.Stave(0, 100, 120);
       this.staveCurrentMeasure.addClef("treble");
-      this.staveCurrentMeasure.setContext(this.context).draw();
-      this.notesCurrentMeasure = [
-        new this.VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }),
-      ];
-      this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.draw();
       this.stavePreviousMeasure = this.staveCurrentMeasure
       this.measureOffset = 100
+    },
+
+    draw: function () {
+      this.staveCurrentMeasure.setContext(this.context).draw();
+      this.notesCurrentMeasure = [
+        new this.VF.StaveNote({ keys: [this.currentScore.notes[0]], duration: "w" }),
+      ];
+      this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
     }
   }
 }

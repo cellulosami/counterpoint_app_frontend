@@ -105,6 +105,7 @@ export default {
     return {
       message: "Scores",
       currentScore: {},
+      currentNote: "",
       inputLength: 8,
       div: "",
       renderer: "",
@@ -114,7 +115,6 @@ export default {
       stavePreviousMeasure: "",
       noteIndex: 1,
       measureOffset: 0,
-      sound: ""
     }
   },
   mounted: function () {
@@ -192,23 +192,22 @@ export default {
 
     soundTest: function () {
       console.log("sound test");
-      var audio = new Audio(require('../assets/short_notes/c/4.mp3'))
-      audio.play();
-      setTimeout(
-        function () {
-          var audio = new Audio(require('../assets/short_notes/c/5.mp3'))
-          audio.play();
-        },
-        1000
-      )
-      setTimeout(
-        function () {
-          var audio = new Audio(require('../assets/short_notes/d/4.mp3'))
-          audio.play();
-        },
-        1000
-      )
+      this.currentNote = 0
+      // console.log(this.currentScore.notes[currentNote])
+      this.playNote();
+      // setTimeout(
+        // function () {
+        //   var audio = new Audio(require(`../assets/short_notes/c/5.mp3`))
+        //   audio.play();
+        // },
+        // 1000
+      // )
       
+    },
+
+    playNote: function () {
+      var audio = new Audio(require(`../assets/short_notes/${this.currentScore.notes[this.currentNote]}.mp3`))
+      audio.play();
     }
   }
 }

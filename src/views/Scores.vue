@@ -194,23 +194,39 @@ export default {
     soundTest: function () {
       console.log("sound test");
       this.currentNote = 0
-      // console.log(this.currentScore.notes[currentNote])
       this.playNote();
       this.currentNote++;
-      this.playNote();
-      // setTimeout(
-        // function () {
-        //   var audio = new Audio(require(`../assets/short_notes/c/5.mp3`))
-        //   audio.play();
-        // },
-        // 1000
-      // )
-      
+      this.playScore();
+      // this.sleep(1000).then(() => {
+      //   this.playNote();
+      //   this.currentNote++;
+      //   if (this.currentNote < this.currentScore.notes.length) {
+      //     this.sleep(1000).then(() => {
+      //       this.playNote();
+      //       this.currentNote++;
+      //     });
+      //   }
+      // });
     },
 
     playNote: function () {
+      console.log(this.currentScore.notes[this.currentNote]);
       var audio = new Audio(require(`../assets/short_notes/${this.currentScore.notes[this.currentNote]}.mp3`))
       audio.play();
+    },
+
+    playScore: function () {
+      this.sleep(950).then(() => {
+        this.playNote();
+        this.currentNote++;
+        if (this.currentNote < this.currentScore.notes.length) {
+          this.playScore();
+        }
+      });
+    },
+
+    sleep: function (ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
     }
   }
 }

@@ -139,9 +139,10 @@ export default {
     },
 
     drawStave: function () {
+      this.noteIndex = 0
       this.addFirstStave();
+      this.noteIndex++;
 
-      this.noteIndex = 1
       while (this.noteIndex < (this.currentScore.notes.length / 2)) {
         this.addAdditionalMeasure();
         this.noteIndex++;
@@ -185,7 +186,7 @@ export default {
     draw: function () {
       this.staveCurrentMeasure.setContext(this.context).draw();
       this.notesCurrentMeasure = [
-        new VF.StaveNote({ keys: [this.currentScore.notes[0]], duration: "w" }),
+        new VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }),
       ];
       VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
     },
@@ -194,6 +195,8 @@ export default {
       console.log("sound test");
       this.currentNote = 0
       // console.log(this.currentScore.notes[currentNote])
+      this.playNote();
+      this.currentNote++;
       this.playNote();
       // setTimeout(
         // function () {

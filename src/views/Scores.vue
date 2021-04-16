@@ -192,8 +192,23 @@ export default {
 
     soundTest: function () {
       console.log("sound test");
-      var audio = new Audio(require('../assets/Piano.C4.mp3'))
-      audio.play()
+      var audio = new Audio(require('../assets/short_notes/c/4.mp3'))
+      audio.play();
+      setTimeout(
+        function () {
+          var audio = new Audio(require('../assets/short_notes/c/5.mp3'))
+          audio.play();
+        },
+        1000
+      )
+      setTimeout(
+        function () {
+          var audio = new Audio(require('../assets/short_notes/d/4.mp3'))
+          audio.play();
+        },
+        1000
+      )
+      
     }
   }
 }

@@ -37,6 +37,7 @@
         </select>
         </h5>
         <button v-on:click="scoresCreate" class="btn" id="generate">Generate!</button>
+        <button v-on:click="soundTest" class="btn">Sound Test</button>
       </div>
       <div id="staff-container">
         <div id="boo">
@@ -96,6 +97,7 @@
 <script>
 import axios from "axios";
 import Vex from "vexflow";
+const VF = Vex.Flow;
 
 export default {
 
@@ -104,7 +106,6 @@ export default {
       message: "Scores",
       currentScore: {},
       inputLength: 8,
-      VF: Vex.Flow,
       div: "",
       renderer: "",
       context: "",
@@ -113,11 +114,12 @@ export default {
       stavePreviousMeasure: "",
       noteIndex: 1,
       measureOffset: 0,
+      sound: ""
     }
   },
   mounted: function () {
     this.div = document.getElementById("boo");
-    this.renderer = new this.VF.Renderer(this.div, this.VF.Renderer.Backends.SVG);
+    this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG);
     this.renderer.resize(1000, 400);
     this.context = this.renderer.getContext();
   },
@@ -155,7 +157,7 @@ export default {
     },
 
     addFirstStave: function () {
-      this.staveCurrentMeasure = new this.VF.Stave(0, 0, 150);
+      this.staveCurrentMeasure = new VF.Stave(0, 0, 150);
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
       this.draw();
       this.stavePreviousMeasure = this.staveCurrentMeasure
@@ -173,7 +175,7 @@ export default {
     },
 
     addSecondStave: function () {
-      this.staveCurrentMeasure = new this.VF.Stave(0, 100, 120);
+      this.staveCurrentMeasure = new VF.Stave(0, 100, 120);
       this.staveCurrentMeasure.addClef("treble");
       this.draw();
       this.stavePreviousMeasure = this.staveCurrentMeasure
@@ -183,9 +185,15 @@ export default {
     draw: function () {
       this.staveCurrentMeasure.setContext(this.context).draw();
       this.notesCurrentMeasure = [
-        new this.VF.StaveNote({ keys: [this.currentScore.notes[0]], duration: "w" }),
+        new VF.StaveNote({ keys: [this.currentScore.notes[0]], duration: "w" }),
       ];
-      this.VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+    },
+
+    soundTest: function () {
+      console.log("sound test");
+      var audio = new Audio(require('../assets/Piano.C4.mp3'))
+      audio.play()
     }
   }
 }

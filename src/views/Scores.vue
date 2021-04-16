@@ -62,7 +62,7 @@
   background-color: hsl(24, 10%, 90%);
   border-radius: 5px;
   padding-left: 32px;
-  Height: 216px;
+  Height: 240px;
   width: 1024px;
 }
 
@@ -115,6 +115,7 @@ export default {
       stavePreviousMeasure: "",
       noteIndex: 1,
       measureOffset: 0,
+      group: ""
     }
   },
   mounted: function () {
@@ -122,7 +123,9 @@ export default {
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG);
     this.renderer.resize(1000, 400);
     this.context = this.renderer.getContext();
+    this.group = this.context.openGroup();
   },
+
   methods: {
     scoresCreate: function () {
       console.log("creating...");
@@ -139,6 +142,9 @@ export default {
     },
 
     drawStave: function () {
+      this.context.closeGroup();
+      this.context.svg.removeChild(this.group);
+      this.group = this.context.openGroup();
       this.noteIndex = 0
       this.addFirstStave();
       this.noteIndex++;
@@ -216,7 +222,7 @@ export default {
     },
 
     playScore: function () {
-      this.sleep(950).then(() => {
+      this.sleep(900).then(() => {
         this.playNote();
         this.currentNote++;
         if (this.currentNote < this.currentScore.notes.length) {

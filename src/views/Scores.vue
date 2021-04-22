@@ -36,15 +36,36 @@
           </option>
         </select>
         </h5>
-        <button v-on:click="scoresCreate" class="btn" id="generate">Generate!</button>
-        <button v-on:click="soundTest" class="btn">Sound Test</button>
+        <button 
+          v-on:click="scoresCreate" 
+          class="btn" 
+          id="generate"
+        >
+          Generate!
+        </button>
+        <button 
+          v-on:click="playback" 
+          class="btn" id="play" 
+          v-if="currentlyPlaying === false"
+        >
+          <img src="../assets/play.png" height="16px">
+        </button>
+        <button 
+          class="btn" 
+          id="playing" 
+          v-if="currentlyPlaying === true"
+        >
+          <img src="../assets/play.png" height="16px">
+        </button>
       </div>
       <div id="staff-container">
         <div id="boo">
         </div>
       </div>
     </div>
+    <p> attr: <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></p>
   </div>
+
 </template>
 
 <style>
@@ -80,17 +101,31 @@
 
 #generate {
   color: #1b262c;
-  background-color: #f0834d;
+  background-color: #d37546;
   font-weight: bold;
   transition: ease 0.2s;
 }
 
 #generate:hover {
-  background-color: #ff8c00;
+  background-color: #ffa97e;
 }
 
 #measures {
   margin-bottom: 20px;
+}
+
+#play {
+  background-color: #05a95c;
+  margin-left: 10px;
+}
+
+#play:hover {
+  background-color: #06fa88;
+}
+
+#playing {
+  background-color: #05a95d85;
+  margin-left: 10px;
 }
 </style>
 
@@ -115,7 +150,8 @@ export default {
       stavePreviousMeasure: "",
       noteIndex: 1,
       measureOffset: 0,
-      group: ""
+      group: "",
+      currentlyPlaying: false,
     }
   },
   mounted: function () {
@@ -128,14 +164,12 @@ export default {
 
   methods: {
     scoresCreate: function () {
-      console.log("creating...");
       let params = {
         length: parseInt(this.inputLength)
       }
       axios
         .post("http://localhost:3000/api/scores", params)
         .then(response => {
-          console.log(response.data);
           this.currentScore = response.data;
           this.drawStave();
         })
@@ -167,7 +201,6 @@ export default {
       this.staveCurrentMeasure = new VF.Stave(0, 0, 150);
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
       this.draw();
-      this.stavePreviousMeasure = this.staveCurrentMeasure
       this.measureOffset = 0
     },
 
@@ -178,14 +211,12 @@ export default {
         110
       );
       this.draw();
-      this.stavePreviousMeasure = this.staveCurrentMeasure
     },
 
     addSecondStave: function () {
       this.staveCurrentMeasure = new VF.Stave(0, 100, 120);
       this.staveCurrentMeasure.addClef("treble");
       this.draw();
-      this.stavePreviousMeasure = this.staveCurrentMeasure
       this.measureOffset = 100
     },
 
@@ -195,28 +226,18 @@ export default {
         new VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }),
       ];
       VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.stavePreviousMeasure = this.staveCurrentMeasure;
     },
 
-    soundTest: function () {
-      console.log("sound test");
+    playback: function () {
+      this.currentlyPlaying = true;
       this.currentNote = 0
       this.playNote();
       this.currentNote++;
       this.playScore();
-      // this.sleep(1000).then(() => {
-      //   this.playNote();
-      //   this.currentNote++;
-      //   if (this.currentNote < this.currentScore.notes.length) {
-      //     this.sleep(1000).then(() => {
-      //       this.playNote();
-      //       this.currentNote++;
-      //     });
-      //   }
-      // });
     },
 
     playNote: function () {
-      console.log(this.currentScore.notes[this.currentNote]);
       var audio = new Audio(require(`../assets/short_notes/${this.currentScore.notes[this.currentNote]}.mp3`))
       audio.play();
     },
@@ -225,8 +246,12 @@ export default {
       this.sleep(900).then(() => {
         this.playNote();
         this.currentNote++;
-        if (this.currentNote < this.currentScore.notes.length) {
+        if (this.currentNote < (this.currentScore.notes.length)) {
           this.playScore();
+        } else {
+          this.sleep(900).then(() => {
+            this.currentlyPlaying = false;
+          })
         }
       });
     },

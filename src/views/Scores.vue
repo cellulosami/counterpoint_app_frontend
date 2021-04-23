@@ -40,6 +40,14 @@
           v-on:click="scoresCreate" 
           class="btn" 
           id="generate"
+          v-if="currentlyPlaying === false"
+        >
+          Generate!
+        </button>
+        <button 
+          class="btn" 
+          id="generate-inactive"
+          v-if="currentlyPlaying === true"
         >
           Generate!
         </button>
@@ -52,7 +60,7 @@
         </button>
         <button 
           class="btn" 
-          id="playing" 
+          id="play-inactive" 
           v-if="currentlyPlaying === true"
         >
           <img src="../assets/play.png" height="16px">
@@ -110,6 +118,12 @@
   background-color: #ffa97e;
 }
 
+#generate-inactive {
+  color: #1b262c;
+  background-color: #d3754687;
+  font-weight: bold;
+}
+
 #measures {
   margin-bottom: 20px;
 }
@@ -123,7 +137,7 @@
   background-color: #06fa88;
 }
 
-#playing {
+#play-inactive {
   background-color: #05a95d85;
   margin-left: 10px;
 }
@@ -244,7 +258,9 @@ export default {
     },
 
     playback: function () {
-      this.currentlyPlaying = true; //turns off play button
+      if (this.currentScore.notes) {
+        this.currentlyPlaying = true; //turns off play button
+      }
       this.currentNote = 0
       this.playNote();
       this.playScore();

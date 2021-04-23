@@ -138,7 +138,7 @@ export default {
 
   data: function () {
     return {
-      message: "Scores",
+      message: "Why Can't I Firmus?",
       currentScore: {},
       currentNote: "",
       inputLength: 8,
@@ -176,32 +176,44 @@ export default {
     },
 
     drawStave: function () {
+      //setup
       this.context.closeGroup();
       this.context.svg.removeChild(this.group);
       this.group = this.context.openGroup();
-      this.noteIndex = 0
-      this.addFirstStave();
-      this.noteIndex++;
+      this.noteIndex = 0;
 
+      //draw first bar
+      this.addFirstStave();
+      
+      //draw remaining bars on first line
       while (this.noteIndex < (this.currentScore.notes.length / 2)) {
         this.addAdditionalMeasure();
-        this.noteIndex++;
       }
 
+      //draw first bar on second line
       this.addSecondStave();
-      this.noteIndex++;
-
-      while (this.noteIndex < this.currentScore.notes.length) {
+      
+      //draw all but last bar on second line
+      while (this.noteIndex < this.currentScore.notes.length - 1) {
         this.addAdditionalMeasure();
-        this.noteIndex++;
       }
+
+      //draw last bar on second line with double barline
+      this.staveCurrentMeasure = new Vex.Flow.Stave(
+        this.stavePreviousMeasure.width + this.stavePreviousMeasure.x,
+        this.measureOffset,
+        110
+      );
+      this.staveCurrentMeasure.setEndBarType(Vex.Flow.Barline.type.END);
+      this.draw();
     },
 
     addFirstStave: function () {
       this.staveCurrentMeasure = new VF.Stave(0, 0, 150);
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
       this.draw();
-      this.measureOffset = 0
+      this.measureOffset = 0;
+      this.noteIndex++;
     },
 
     addAdditionalMeasure: function () {
@@ -211,6 +223,7 @@ export default {
         110
       );
       this.draw();
+      this.noteIndex++;
     },
 
     addSecondStave: function () {
@@ -218,6 +231,7 @@ export default {
       this.staveCurrentMeasure.addClef("treble");
       this.draw();
       this.measureOffset = 100
+      this.noteIndex++;
     },
 
     draw: function () {
@@ -230,27 +244,26 @@ export default {
     },
 
     playback: function () {
-      this.currentlyPlaying = true;
+      this.currentlyPlaying = true; //turns off play button
       this.currentNote = 0
       this.playNote();
-      this.currentNote++;
       this.playScore();
     },
 
     playNote: function () {
       var audio = new Audio(require(`../assets/short_notes/${this.currentScore.notes[this.currentNote]}.mp3`))
       audio.play();
+      this.currentNote++;
     },
 
     playScore: function () {
       this.sleep(900).then(() => {
         this.playNote();
-        this.currentNote++;
         if (this.currentNote < (this.currentScore.notes.length)) {
           this.playScore();
         } else {
           this.sleep(900).then(() => {
-            this.currentlyPlaying = false;
+            this.currentlyPlaying = false; //turns play button back on
           })
         }
       });

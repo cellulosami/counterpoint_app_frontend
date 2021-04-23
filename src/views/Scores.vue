@@ -6,7 +6,7 @@
         <p>{{ currentScore }}</p>
         <div id="label"></div>
         <h5 id="measures"> Measures:
-        <select id="length-select" class="dropdown" v-model="inputLength">
+        <select class="score-select dropdown" v-model="inputLength">
           <option>
             8
           </option>
@@ -33,6 +33,15 @@
           </option>
           <option>
             16
+          </option>
+        </select>
+        Mode:
+        <select class="score-select dropdown" v-model="inputMode">
+          <option value="ionian">
+            Ionian
+          </option>
+          <option value="dorian">
+            Dorian
           </option>
         </select>
         </h5>
@@ -156,6 +165,7 @@ export default {
       currentScore: {},
       currentNote: "",
       inputLength: 8,
+      inputMode: "ionian",
       div: "",
       renderer: "",
       context: "",
@@ -179,7 +189,8 @@ export default {
   methods: {
     scoresCreate: function () {
       let params = {
-        length: parseInt(this.inputLength)
+        length: parseInt(this.inputLength),
+        mode: this.inputMode
       }
       axios
         .post("http://localhost:3000/api/scores", params)

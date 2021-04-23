@@ -261,9 +261,15 @@ export default {
 
     draw: function () {
       this.staveCurrentMeasure.setContext(this.context).draw();
-      this.notesCurrentMeasure = [
-        new VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }),
-      ];
+      if (this.currentScore.notes[this.noteIndex].includes("#")) {
+        this.notesCurrentMeasure = [
+          new VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" }).addAccidental(0, new VF.Accidental("#")),
+        ];   
+      } else {
+        this.notesCurrentMeasure = [
+          new VF.StaveNote({ keys: [this.currentScore.notes[this.noteIndex]], duration: "w" })
+        ];
+      }
       VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
       this.stavePreviousMeasure = this.staveCurrentMeasure;
     },
@@ -272,12 +278,16 @@ export default {
       if (this.currentScore.notes) {
         this.currentlyPlaying = true; //turns off play button
       }
+      if (this.currentScore.notes[this.currentScore.notes.length - 2] === "c#/4") {
+        this.currentScore.notes[this.currentScore.notes.length - 2] = "cSharp/4"
+      }
       this.currentNote = 0
       this.playNote();
       this.playScore();
     },
 
     playNote: function () {
+      console.log(this.currentScore.notes[this.currentNote]);
       var audio = new Audio(require(`../assets/short_notes/${this.currentScore.notes[this.currentNote]}.mp3`))
       audio.play();
       this.currentNote++;

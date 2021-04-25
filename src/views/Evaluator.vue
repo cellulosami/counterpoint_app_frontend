@@ -5,41 +5,24 @@
       {{ lengthTranslator }}
     </h1>
     <select class="score-select dropdown" v-model="length">
-      <option>
-        8
-      </option>
-      <option>
-        9
-      </option>
-      <option>
-        10
-      </option>
-      <option>
-        11
-      </option>
-      <option>
-        12
-      </option>
-      <option>
-        13
-      </option>
-      <option>
-        14
-      </option>
-      <option>
-        15
-      </option>
-      <option>
-        16
-      </option>
+      <option> 8 </option>
+      <option> 9 </option>
+      <option> 10 </option>
+      <option> 11 </option>
+      <option> 12 </option>
+      <option> 13 </option>
+      <option> 14 </option>
+      <option> 15 </option>
+      <option> 16 </option>
     </select>
-    <div>
-      <input v-for="note in lengthTranslator" v-model="notes[note]" />
+    <div v-for="note in lengthTranslator">
+      <select v-model="notesNames[note]">
+        <option v-for="option in noteOptions"> {{ option }} </option>
+      </select>
     </div>
     <div>
-      <h3>
-        {{ notes }}
-      </h3>
+      <h3> {{ notesNames }} </h3>
+      <h3> {{ notes }} </h3>
     </div>
     <button v-on:click="notesToInt(createEvaluation)">
       Evaluate
@@ -72,9 +55,28 @@ export default {
   data: function () {
     return {
       notes: [0, 2, 4, 5, 7, 5, 2, 0],
+      notesNames: ["C4", "D4", "E4", "F4", "G4", "F4", "D4", "C4"],
+      notesTranslator: {
+        "E3": -8, 
+        "F3": -7, 
+        "G3": -5, 
+        "A3": -3, 
+        "B3": -1, 
+        "C4": 0, 
+        "D4": 2, 
+        "E4": 4, 
+        "F4": 5, 
+        "G4": 7, 
+        "A4": 9, 
+        "B4": 11, 
+        "C5": 12, 
+        "D5": 14, 
+        "E5": 16
+      },
       length: 8,
       errors: [],
       suggestions: [],
+      noteOptions: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
     }
   },
   computed: {

@@ -16,17 +16,17 @@
       <option> 16 </option>
     </select>
     <select v-model="mode">
-      <option value="ionian"> Ionian </option>
-      <option value="dorian"> Dorian </option>
+      <option value="ionian"> C Ionian </option>
+      <option value="dorian"> D Dorian </option>
     </select>
     <div v-for="position in lengthTranslator">
       <select v-model="notesNames[position]">
         <option 
-          v-for="option in nameOptions" 
+          v-for="option in nameOptions[mode]" 
           v-if="!modeCheck(position)"> {{ option }} 
         </option>
         <option 
-          v-for="option in nameOptions" 
+          v-for="option in nameOptions[mode]" 
           v-if="modeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
         </option>
       </select>
@@ -69,8 +69,11 @@ export default {
       mode: "ionian",
       errors: [],
       suggestions: [],
-      notesNames: ["C4", "D4", "E4", "F4", "G4", "F4", "D4", "C4"],
-      nameOptions: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
+      notesNames: ["", "", "", "", "", "", "", ""],
+      nameOptions: {
+        ionian: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
+        dorian: ["F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5"],
+      },
       notesTranslator: {
         "E3": -8, 
         "F3": -7, 
@@ -87,7 +90,7 @@ export default {
         "B4": 11, 
         "C5": 12, 
         "D5": 14, 
-        "E5": 16
+        "E5": 16,
       },
     }
   },

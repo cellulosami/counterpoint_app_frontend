@@ -34,8 +34,14 @@
       </option>
     </select>
     <div>
+      <input v-for="note in lengthTranslator" v-model="notes[note]" />
     </div>
-    <button v-on:click="createEvaluation">
+    <div>
+      <h3>
+        {{ notes }}
+      </h3>
+    </div>
+    <button v-on:click="notesToInt(createEvaluation)">
       Evaluate
     </button>
   </div>
@@ -48,7 +54,7 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      notes: [0, 2, 4, 5, 7, 5, 12, 0],
+      notes: [0, 2, 4, 5, 7, 5, 2, 0],
       length: 8, 
     }
   },
@@ -57,7 +63,7 @@ export default {
       let array = [];
       let i = 0;
       while (i < this.length) {
-        array.push(0)
+        array.push(i)
         i++;
       }
       return array;
@@ -69,6 +75,7 @@ export default {
       let params = {
         notes: this.notes
       };
+
       axios
         .post("api/errors", params)
         .then(response => {
@@ -77,6 +84,14 @@ export default {
         .catch(error => {
           console.log("aww");
         });
+    },
+    notesToInt: function (callback) {
+      console.log(this.notes);
+      this.notes = this.notes.map(note => {
+        return parseInt(note);
+      });
+      console.log(this.notes);
+      callback();
     },
   },
 }

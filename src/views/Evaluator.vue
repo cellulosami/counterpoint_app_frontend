@@ -17,7 +17,14 @@
     </select>
     <div v-for="note in lengthTranslator">
       <select v-model="notesNames[note]">
-        <option v-for="option in noteOptions"> {{ option }} </option>
+        <option 
+          v-for="option in nameOptions" 
+          v-if="!modeCheck(note)"> {{ option }} 
+        </option>
+        <option 
+          v-for="option in nameOptions" 
+          v-if="modeCheck(note)"> {{ option == "C4" ? "C#4": option }} 
+        </option>
       </select>
     </div>
     <div>
@@ -75,7 +82,8 @@ export default {
       length: 8,
       errors: [],
       suggestions: [],
-      noteOptions: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
+      nameOptions: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
+      mode: "ionian",
     }
   },
   computed: {
@@ -112,6 +120,12 @@ export default {
           console.log("aww");
         });
     },
+    modeCheck: function (position) {
+      if (this.mode == "dorian" && position == this.length - 2) {
+        return true;
+      }
+      return false;
+    }
   },
 }
 </script>

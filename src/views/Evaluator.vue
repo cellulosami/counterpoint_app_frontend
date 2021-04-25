@@ -19,6 +19,7 @@
       <option value="ionian"> C Ionian </option>
       <option value="dorian"> D Dorian </option>
     </select>
+    <button v-on:click="reset">Clear</button>
     <div v-for="position in lengthTranslator">
       <select v-model="notesNames[position]">
         <option 
@@ -69,28 +70,28 @@ export default {
       mode: "ionian",
       errors: [],
       suggestions: [],
-      notesNames: ["", "", "", "", "", "", "", ""],
+      //notesNames: ["", "", "", "", "", "", "", ""],
+      notesNames: ["C4", "E4", "F4", "G4", "F4", "E4", "D4", "C4"],
       nameOptions: {
         ionian: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
         dorian: ["F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5"],
       },
       notesTranslator: {
-        "E3": -8, 
-        "F3": -7, 
-        "G3": -5, 
-        "A3": -3, 
-        "B3": -1, 
-        "C4": 0,
-        "C♯4": 1,
-        "D4": 2, 
-        "E4": 4, 
-        "F4": 5, 
-        "G4": 7, 
-        "A4": 9, 
-        "B4": 11, 
-        "C5": 12, 
-        "D5": 14, 
-        "E5": 16,
+        "E3": "e/3", 
+        "F3": "f/3", 
+        "G3": "g/3", 
+        "A3": "a/3", 
+        "B3": "b/3", 
+        "C4": "c/4",
+        "D4": "d/4", 
+        "E4": "e/4", 
+        "F4": "f/4", 
+        "G4": "g/4", 
+        "A4": "a/4", 
+        "B4": "b/4", 
+        "C5": "c/5", 
+        "D5": "d/5", 
+        "E5": "e/5",      
       },
     }
   },
@@ -133,6 +134,9 @@ export default {
         return true;
       }
       return false;
+    },
+    reset: function () {
+      this.notesNames = ["", "", "", "", "", "", "", ""]
     }
   },
 }

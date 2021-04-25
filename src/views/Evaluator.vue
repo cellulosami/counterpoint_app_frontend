@@ -54,7 +54,6 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      notes: [0, 2, 4, 5, 7, 5, 2, 0],
       notesNames: ["C4", "D4", "E4", "F4", "G4", "F4", "D4", "C4"],
       notesTranslator: {
         "E3": -8, 
@@ -89,6 +88,11 @@ export default {
       }
       return array;
     },
+    notes () {
+      return this.notesNames.map(note => {
+        return this.notesTranslator[note];
+      })     
+    }
   },
   methods: {
     createEvaluation: function () {

@@ -44,9 +44,26 @@
     <button v-on:click="notesToInt(createEvaluation)">
       Evaluate
     </button>
+    <h3><ul>
+      <li v-for="error in errors" class="eval-error">
+        {{ error }}
+      </li>
+      <li v-for="suggestion in suggestions" class="eval-suggestion">
+        {{ suggestion }}
+      </li>
+    </ul></h3>
   </div>
 </template>
 
+<style>
+.eval-error {
+  color: red;
+}
+
+.eval-suggestion {
+  color: yellow;
+}
+</style>
 
 <script>
 import axios from "axios";
@@ -55,7 +72,9 @@ export default {
   data: function () {
     return {
       notes: [0, 2, 4, 5, 7, 5, 2, 0],
-      length: 8, 
+      length: 8,
+      errors: [],
+      suggestions: [],
     }
   },
   computed: {
@@ -80,6 +99,8 @@ export default {
         .post("api/errors", params)
         .then(response => {
           console.log(response.data);
+          this.errors = response.data.errors;
+          this.suggestions = response.data.suggestions;
         })
         .catch(error => {
           console.log("aww");

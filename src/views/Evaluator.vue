@@ -15,15 +15,19 @@
       <option> 15 </option>
       <option> 16 </option>
     </select>
-    <div v-for="note in lengthTranslator">
-      <select v-model="notesNames[note]">
+    <select v-model="mode">
+      <option value="ionian"> Ionian </option>
+      <option value="dorian"> Dorian </option>
+    </select>
+    <div v-for="position in lengthTranslator">
+      <select v-model="notesNames[position]">
         <option 
           v-for="option in nameOptions" 
-          v-if="!modeCheck(note)"> {{ option }} 
+          v-if="!modeCheck(position)"> {{ option }} 
         </option>
         <option 
           v-for="option in nameOptions" 
-          v-if="modeCheck(note)"> {{ option == "C4" ? "C#4": option }} 
+          v-if="modeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
         </option>
       </select>
     </div>
@@ -61,14 +65,20 @@ import axios from "axios";
 export default {
   data: function () {
     return {
+      length: 8,
+      mode: "ionian",
+      errors: [],
+      suggestions: [],
       notesNames: ["C4", "D4", "E4", "F4", "G4", "F4", "D4", "C4"],
+      nameOptions: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
       notesTranslator: {
         "E3": -8, 
         "F3": -7, 
         "G3": -5, 
         "A3": -3, 
         "B3": -1, 
-        "C4": 0, 
+        "C4": 0,
+        "C♯4": 1,
         "D4": 2, 
         "E4": 4, 
         "F4": 5, 
@@ -79,11 +89,6 @@ export default {
         "D5": 14, 
         "E5": 16
       },
-      length: 8,
-      errors: [],
-      suggestions: [],
-      nameOptions: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
-      mode: "ionian",
     }
   },
   computed: {

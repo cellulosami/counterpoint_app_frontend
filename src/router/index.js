@@ -10,10 +10,15 @@ const routes = [
     component: () => import('../views/Scores.vue')
   },
   {
+    path: '/evaluator',
+    name: 'Evaluator',
+    component: () => import('../views/Evaluator.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue')
-  }
+  },
 ]
 
 const router = new VueRouter({

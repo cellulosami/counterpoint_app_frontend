@@ -24,7 +24,7 @@
       <h3> {{ notesNames }} </h3>
       <h3> {{ notes }} </h3>
     </div>
-    <button v-on:click="notesToInt(createEvaluation)">
+    <button v-on:click="createEvaluation">
       Evaluate
     </button>
     <h3><ul>
@@ -111,14 +111,6 @@ export default {
         .catch(error => {
           console.log("aww");
         });
-    },
-    notesToInt: function (callback) {
-      console.log(this.notes);
-      this.notes = this.notes.map(note => {
-        return parseInt(note);
-      });
-      console.log(this.notes);
-      callback();
     },
   },
 }

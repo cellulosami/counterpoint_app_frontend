@@ -2,18 +2,18 @@
   <div>
     <h1>
       Evaluator
-      {{ lengthTranslator }}
+      {{ length }}
     </h1>
     <select class="score-select dropdown" v-model="length">
-      <option> 8 </option>
-      <option> 9 </option>
-      <option> 10 </option>
-      <option> 11 </option>
-      <option> 12 </option>
-      <option> 13 </option>
-      <option> 14 </option>
-      <option> 15 </option>
-      <option> 16 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7]"> 8 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8]"> 9 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"> 10 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"> 11 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"> 12 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"> 13 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"> 14 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]"> 15 </option>
+      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"> 16 </option>
     </select>
     <select v-model="mode">
       <option value="ionian"> C Ionian </option>
@@ -21,14 +21,14 @@
     </select>
     <button v-on:click="reset">Clear</button>
     <div>
-      <span v-for="position in lengthTranslator">
+      <span v-for="position in length">
         {{ position + 1 }}:<select v-model="notesNames[position]">
           <option 
-            v-for="option in nameOptions[mode]" 
-            v-if="!penultModeCheck(position) && !antepenultModeCheck(position)"> {{ option }} 
+            v-for="option in nameOptions[mode].reverse()" 
+            v-if="!penultModeCheck(position)"> {{ option }} 
           </option>
           <option 
-            v-for="option in nameOptions[mode]" 
+            v-for="option in nameOptions[mode].reverse()" 
             v-if="penultModeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
           </option>
       </select> </span>
@@ -67,7 +67,7 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      length: 16,
+      length: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
       mode: "ionian",
       errors: [],
       suggestions: [],
@@ -98,15 +98,6 @@ export default {
     }
   },
   computed: {
-    lengthTranslator () {
-      let array = [];
-      let i = 0;
-      while (i < this.length) {
-        array.push(i)
-        i++;
-      }
-      return array;
-    },
     notes () {
       return this.notesNames.map(note => {
         return this.notesTranslator[note];

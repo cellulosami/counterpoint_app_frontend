@@ -260,8 +260,9 @@ export default {
       if (this.currentScore.notes) {
         this.currentlyPlaying = true; //turns off play button
       }
-      if (this.currentScore.notes[this.currentScore.notes.length - 2] === "c#/4") {
-        this.currentScore.notes[this.currentScore.notes.length - 2] = "cSharp/4"
+      switch (this.currentScore.notes[this.currentScore.notes.length - 2]) {
+        case "c#/4":
+          this.currentScore.notes[this.currentScore.notes.length - 2] = "cSharp/4"
       }
       this.currentNote = 0
       this.playNote();

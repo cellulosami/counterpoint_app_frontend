@@ -24,11 +24,11 @@
       <select v-model="notesNames[position]">
         <option 
           v-for="option in nameOptions[mode]" 
-          v-if="!modeCheck(position)"> {{ option }} 
+          v-if="!penultModeCheck(position) && !antepenultModeCheck(position)"> {{ option }} 
         </option>
         <option 
           v-for="option in nameOptions[mode]" 
-          v-if="modeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
+          v-if="penultModeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
         </option>
       </select>
     </div>
@@ -83,6 +83,7 @@ export default {
         "A3": "a/3", 
         "B3": "b/3", 
         "C4": "c/4",
+        "C♯4": "c#/4",
         "D4": "d/4", 
         "E4": "e/4", 
         "F4": "f/4", 
@@ -115,7 +116,8 @@ export default {
     createEvaluation: function () {
       console.log("Evaluating...");
       let params = {
-        notes: this.notes
+        notes: this.notes,
+        mode: this.mode,
       };
 
       axios
@@ -129,8 +131,14 @@ export default {
           console.log("aww");
         });
     },
-    modeCheck: function (position) {
+    penultModeCheck: function (position) {
       if (this.mode == "dorian" && position == this.length - 2) {
+        return true;
+      }
+      return false;
+    },
+    antepenultModeCheck: function (position) {
+      if (this.mode == "aeolian" && position == this.length - 3) {
         return true;
       }
       return false;

@@ -93,20 +93,20 @@
 
 #length-select {
   color: #1b262c;
-  background-color: hsl(24, 10%, 90%);
+  background-color: #ffffff;
   box-shadow: 0 3px 8px rgb(0 0 0 / 30%);
   border-radius: 3px;
 }
 
 #generate {
   color: #1b262c;
-  background-color: #d37546;
+  background-color: #fc9e4f;
   font-weight: bold;
   transition: ease 0.2s;
 }
 
 #generate:hover {
-  background-color: #ffa97e;
+  background-color: #feb87e;
 }
 
 #generate-inactive {

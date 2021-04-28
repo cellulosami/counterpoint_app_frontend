@@ -4,7 +4,10 @@
       Evaluator
       {{ length }}
     </h1>
-    <select class="score-select dropdown" v-model="length">
+    <select class="score-select dropdown" 
+      v-model="length"
+      v-on:change="lengthTrim()"
+    >
       <option v-bind:value="calculateLengthValue(8)"> 8 </option>
       <option v-bind:value="calculateLengthValue(9)"> 9 </option>
       <option v-bind:value="calculateLengthValue(10)"> 10 </option>
@@ -149,6 +152,12 @@ export default {
         i++;
       }
       return result;
+    },
+    lengthTrim: function () {
+      console.log("trim");
+      if (this.notesNames.length > this.length.length) {
+        this.notesNames = this.notesNames.slice(0, (this.length.length))
+      }
     }
   },
 }

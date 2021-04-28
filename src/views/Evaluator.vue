@@ -23,12 +23,15 @@
     <div>
       <span v-for="position in length">
         {{ position + 1 }}:<select v-model="notesNames[position]">
+          <!-- <option v-for="option in nameOptions[mode]">
+            {{ option }}
+          </option> -->
           <option 
-            v-for="option in nameOptions[mode].reverse()" 
+            v-for="option in nameOptions[mode]" 
             v-if="!penultModeCheck(position)"> {{ option }} 
           </option>
           <option 
-            v-for="option in nameOptions[mode].reverse()" 
+            v-for="option in nameOptions[mode]" 
             v-if="penultModeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
           </option>
       </select> </span>
@@ -74,8 +77,8 @@ export default {
       //notesNames: ["", "", "", "", "", "", "", ""],
       notesNames: ["C4", "D4", "A4", "G4", "A4", "B4", "C5", "G4", "A4", "G4", "F4", "E4", "F4", "C4", "D4", "C4"],
       nameOptions: {
-        ionian: ["E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5"],
-        dorian: ["F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5", "E5", "F5"],
+        ionian: ["E5", "D5", "C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4", "B3", "A3", "G3", "F3", "E3"],
+        dorian: ["F5", "E5", "D5", "C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4", "B3", "A3", "G3", "F3"],
       },
       notesTranslator: {
         "E3": "e/3", 
@@ -124,17 +127,17 @@ export default {
         });
     },
     penultModeCheck: function (position) {
-      if (this.mode == "dorian" && position == this.length - 2) {
+      if (this.mode == "dorian" && position == this.length[this.length.length - 2]) {
         return true;
       }
       return false;
     },
-    antepenultModeCheck: function (position) {
-      if (this.mode == "aeolian" && position == this.length - 3) {
-        return true;
-      }
-      return false;
-    },
+    // antepenultModeCheck: function (position) {
+    //   if (this.mode == "aeolian" && position == this.length[this.length.length - 3]) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
     reset: function () {
       this.notesNames = ["", "", "", "", "", "", "", ""]
     }

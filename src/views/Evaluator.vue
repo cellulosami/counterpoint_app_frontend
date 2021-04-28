@@ -5,15 +5,15 @@
       {{ length }}
     </h1>
     <select class="score-select dropdown" v-model="length">
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7]"> 8 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8]"> 9 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"> 10 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"> 11 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"> 12 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"> 13 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]"> 14 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]"> 15 </option>
-      <option v-bind:value="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"> 16 </option>
+      <option v-bind:value="calculateLengthValue(8)"> 8 </option>
+      <option v-bind:value="calculateLengthValue(9)"> 9 </option>
+      <option v-bind:value="calculateLengthValue(10)"> 10 </option>
+      <option v-bind:value="calculateLengthValue(11)"> 11 </option>
+      <option v-bind:value="calculateLengthValue(12)"> 12 </option>
+      <option v-bind:value="calculateLengthValue(13)"> 13 </option>
+      <option v-bind:value="calculateLengthValue(14)"> 14 </option>
+      <option v-bind:value="calculateLengthValue(15)"> 15 </option>
+      <option v-bind:value="calculateLengthValue(16)"> 16 </option>
     </select>
     <select v-model="mode">
       <option value="ionian"> C Ionian </option>
@@ -140,6 +140,15 @@ export default {
     // },
     reset: function () {
       this.notesNames = ["", "", "", "", "", "", "", ""]
+    },
+    calculateLengthValue: function (number) {
+      let i = 0;
+      let result = [];
+      while (i < number) {
+        result.push(i)
+        i++;
+      }
+      return result;
     }
   },
 }

@@ -2,8 +2,7 @@
   <div class="home">
     <div id="main-body">
       <div id="generator-container">
-        <h1>{{ message }}</h1>
-        <p>{{ currentScore }}</p>
+        <h1 id="title">Cantus Firmus Generator</h1>
         <div id="label"></div>
         <h5 id="measures"> Measures:
         <select class="score-select dropdown" v-model="inputLength">
@@ -61,8 +60,8 @@
         <div id="boo">
         </div>
       </div>
+      <p> attr: <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></p>
     </div>
-    <p> attr: <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></p>
   </div>
 
 </template>
@@ -70,16 +69,12 @@
 <style>
 #main-body {
   padding: 32px;
-  margin: 2%;
   width: 1080px;
-  background-color: #0f4c75;
-  box-shadow: 0 5px 12px rgb(0 0 0 / 30%);
-  border-radius: 20px;
 }
 
 #staff-container {
-  color: black;
   background-color: hsl(24, 10%, 90%);
+  box-shadow: 3px 3px 8px rgb(0 0 0 / 30%);
   border-radius: 5px;
   padding-left: 32px;
   Height: 240px;
@@ -88,35 +83,31 @@
 
 #generator-container {
   margin-bottom: 2%;
-  text-align: center;
+  text-align: left;
 }
 
 #length-select {
-  color: #1b262c;
   background-color: #ffffff;
   box-shadow: 0 3px 8px rgb(0 0 0 / 30%);
   border-radius: 3px;
 }
 
+#measures {
+  margin-bottom: 20px;
+}
+
 #generate {
-  color: #1b262c;
   background-color: #fc9e4f;
   font-weight: bold;
-  transition: ease 0.2s;
 }
 
 #generate:hover {
-  background-color: #feb87e;
+  background-color: #ffbb84;
 }
 
 #generate-inactive {
-  color: #1b262c;
   background-color: #d3754687;
   font-weight: bold;
-}
-
-#measures {
-  margin-bottom: 20px;
 }
 
 #play {
@@ -132,6 +123,25 @@
   background-color: #05a95d85;
   margin-left: 10px;
 }
+
+#title {
+  font-size: 52px;
+  font-weight: bold;
+}
+
+.btn {
+  box-shadow: 0 0px 4px rgb(0 0 0 / 50%);
+  transition: 0s;
+}
+
+.btn:hover {
+  transition: 0.2s ease;
+}
+
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 0px 2px rgb(0 0 0 / 50%);
+}
 </style>
 
 <script>
@@ -139,11 +149,11 @@ import axios from "axios";
 import Vex from "vexflow";
 const VF = Vex.Flow;
 
+console.log(screen.width);
 export default {
 
   data: function () {
     return {
-      message: "Why Can't I Firmus?",
       currentScore: {},
       currentNote: "",
       inputLength: 8,
@@ -237,6 +247,7 @@ export default {
       this.staveCurrentMeasure = new VF.Stave(0, 100, 120);
       this.staveCurrentMeasure.addClef("treble");
       this.draw();
+
       this.measureOffset = 100
       this.noteIndex++;
     },

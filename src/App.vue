@@ -35,9 +35,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: #bbe1fa;
+  color: #272838;
   /* background-color: #3282b8; */
-  background-color: #8fbfe0;
+  background-color: #AFD2E9;
 }
 
 .navbar {
@@ -62,10 +62,9 @@
   color: rgb(233, 233, 233);
   transition: ease 0.2s;
 }
-
 html {
   /* background-color: #3282b8; */
-  background-color: #8fbfe0;
+  background-color: #AFD2E9;
 }
 </style>
 

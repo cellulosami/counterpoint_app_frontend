@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="everything">
     <div>
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -37,7 +37,10 @@
   text-align: left;
   color: #272838;
   /* background-color: #3282b8; */
-  background-color: #AFD2E9;
+}
+
+#everything {
+  background-color: #eff8ff;
 }
 
 .navbar {
@@ -62,9 +65,10 @@
   color: rgb(233, 233, 233);
   transition: ease 0.2s;
 }
+
 html {
   /* background-color: #3282b8; */
-  background-color: #AFD2E9;
+  background-color: #eff8ff;
 }
 </style>
 

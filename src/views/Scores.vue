@@ -3,6 +3,7 @@
     <div id="main-body">
       <div id="generator-container">
         <h1 id="title">Cantus Firmus Generator</h1>
+        <br />
         <div id="label"></div>
         <h5 id="measures"> Measures:
         <select class="score-select dropdown" v-model="inputLength">
@@ -46,7 +47,7 @@
           class="btn" id="play" 
           v-if="currentlyPlaying === false"
         >
-          <img src="../assets/play.png" height="16px">
+          <img src="../assets/play.png" height="20px">
         </button>
         <button 
           class="btn" 
@@ -60,7 +61,7 @@
         <div id="boo">
         </div>
       </div>
-      <p> attr: <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></p>
+      <p > <br /> <div id="attr">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></p>
     </div>
   </div>
 
@@ -68,21 +69,31 @@
 
 <style>
 #main-body {
-  padding: 32px;
-  width: 1080px;
+  padding-top: 24px;
+  padding-right: 48px;
+  padding-left: 48px;
+  padding-bottom: 2px;
+  margin: auto;
+  margin-top: 48px;
+  min-width: 1120px;
+  /* background-color: #AFD2E9; */
+  border-radius: 15px;
+  width: 1120px;
 }
 
 #staff-container {
   background-color: hsl(24, 10%, 90%);
-  box-shadow: 3px 3px 8px rgb(0 0 0 / 30%);
+  box-shadow: 0px 0px 8px rgb(0 0 0 / 30%);
   border-radius: 5px;
   padding-left: 32px;
-  Height: 240px;
-  width: 1024px;
+  height: 232px;
+  width: 984px;
+  margin: auto;
 }
 
 #generator-container {
-  margin-bottom: 2%;
+  margin-bottom: 20px;
+  margin-left: 4%;
   text-align: left;
 }
 
@@ -93,7 +104,8 @@
 }
 
 #measures {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+  font-size: 28px;
 }
 
 #generate {
@@ -125,13 +137,14 @@
 }
 
 #title {
-  font-size: 52px;
+  font-size: 72px;
   font-weight: bold;
 }
 
 .btn {
   box-shadow: 0 0px 4px rgb(0 0 0 / 50%);
   transition: 0s;
+  font-size: 20px;
 }
 
 .btn:hover {
@@ -141,6 +154,10 @@
 .btn:active {
   transform: translateY(2px);
   box-shadow: 0 0px 2px rgb(0 0 0 / 50%);
+}
+
+#attr {
+  text-align: right;
 }
 </style>
 
@@ -173,7 +190,7 @@ export default {
   mounted: function () {
     this.div = document.getElementById("boo");
     this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG);
-    this.renderer.resize(1000, 400);
+    this.renderer.resize(921, 232);
     this.context = this.renderer.getContext();
     this.group = this.context.openGroup();
   },
@@ -244,7 +261,7 @@ export default {
     },
 
     addSecondStave: function () {
-      this.staveCurrentMeasure = new VF.Stave(0, 100, 120);
+      this.staveCurrentMeasure = new VF.Stave(0, 100, 130);
       this.staveCurrentMeasure.addClef("treble");
       this.draw();
 

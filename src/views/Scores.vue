@@ -128,7 +128,7 @@
 }
 
 #play:hover {
-  background-color: #06fa88;
+  background-color: #06d071;
 }
 
 #play-inactive {

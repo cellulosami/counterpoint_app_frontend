@@ -7,29 +7,30 @@
     <div id="evaluator">
       <div id="option-select-container">
       Measures: 
-      <select class="eval-select option-select"
-        v-model="length"
-        v-on:change="lengthTrim()"
-      >
-        <option v-bind:value="calculateLengthValue(8)"> 8 </option>
-        <option v-bind:value="calculateLengthValue(9)"> 9 </option>
-        <option v-bind:value="calculateLengthValue(10)"> 10 </option>
-        <option v-bind:value="calculateLengthValue(11)"> 11 </option>
-        <option v-bind:value="calculateLengthValue(12)"> 12 </option>
-        <option v-bind:value="calculateLengthValue(13)"> 13 </option>
-        <option v-bind:value="calculateLengthValue(14)"> 14 </option>
-        <option v-bind:value="calculateLengthValue(15)"> 15 </option>
-        <option v-bind:value="calculateLengthValue(16)"> 16 </option>
-      </select>
-      Mode: 
-      <select v-model="mode" class="eval-select option-select">
-        <option value="ionian"> C Ionian </option>
-        <option value="dorian"> D Dorian </option>
-      </select>
-      <button v-on:click="reset" class="btn btn-clr">Clear</button>
+        <select class="eval-select option-select"
+          v-model="length"
+          v-on:change="lengthTrim()"
+        >
+          <option v-bind:value="calculateLengthValue(8)"> 8 </option>
+          <option v-bind:value="calculateLengthValue(9)"> 9 </option>
+          <option v-bind:value="calculateLengthValue(10)"> 10 </option>
+          <option v-bind:value="calculateLengthValue(11)"> 11 </option>
+          <option v-bind:value="calculateLengthValue(12)"> 12 </option>
+          <option v-bind:value="calculateLengthValue(13)"> 13 </option>
+          <option v-bind:value="calculateLengthValue(14)"> 14 </option>
+          <option v-bind:value="calculateLengthValue(15)"> 15 </option>
+          <option v-bind:value="calculateLengthValue(16)"> 16 </option>
+        </select>
+        Mode: 
+        <select v-model="mode" class="eval-select option-select">
+          <option value="ionian"> C Ionian </option>
+          <option value="dorian"> D Dorian </option>
+        </select>
+        <button v-on:click="clear()" class="btn btn-clr">Clear</button>
+        <button v-on:click="reset()" class="btn btn-clr reset">Reset</button>
       </div>
       <br />
-      <div id="note-select-container">
+      <div id="note-input-container">
         <span v-for="position in length" id="note-select-container">
           <span id="note-number">
             {{ position + 1 }}:
@@ -97,30 +98,47 @@
   font-family: Helvetica, sans-serif;
 }
 
-#note-number {
-  position: absolute;
-  transform: translateX(-1.4em);
-  text-align: right;
+#note-input-container {
+  position: relative;
+  right: 5em;
 }
 
 #note-select-container {
-  position: relative;
-  width: 12.5;
+  width: 12.5%;
   float: left;
+  text-align: right;
+  min-width: 140px;
+}
+
+#note-number {
+  text-align: right;
 }
 
 .note-select {
+  position: absolute;
   width: 3em;
   margin-right: 2.6em;
-  margin-left: 0.25em;
+  margin-left: 0.4em;
 }
 
 .btn-clr {
   font-size: 20px;
   font-weight: bold;
-  background-color: white;
+  background-color: hsl(24, 10%, 90%);
   box-shadow: 0px 0px 6px rgb(0 0 0 / 50%);
   margin-left: 1%;
+}
+
+.btn-clr:hover {
+  background-color: hsl(0, 57%, 97%);
+}
+
+.reset {
+  background-color: #fc9e4f;
+}
+
+.reset:hover {
+  background-color: #ffbb84;
 }
 
 .btn-clr:active {
@@ -133,8 +151,14 @@
   margin-top: 1.7em;
   font-size: 28px;
   font-weight: bold;
-  background-color: white;
+  background-color: #0f4c75;
+  color: white;
   box-shadow: 0px 3px 6px rgb(0 0 0 / 50%);
+}
+
+.btn-eval:hover {
+  background-color: #14649a;
+  color: white;
 }
 
 .btn-eval:active {
@@ -229,8 +253,16 @@ export default {
     //   }
     //   return false;
     // },
+    clear: function () {
+      this.notesNames = []
+      let i = 0;
+      while (i < this.lengt.length) {
+        this.notesNames.push("");
+      }
+    },
     reset: function () {
-      this.notesNames = ["", "", "", "", "", "", "", ""]
+      this.length = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+      this.notesNames = ["C4", "D4", "A4", "G4", "A4", "B4", "C5", "G4", "A4", "G4", "F4", "E4", "F4", "C4", "D4", "C4"];
     },
     calculateLengthValue: function (number) {
       let i = 0;

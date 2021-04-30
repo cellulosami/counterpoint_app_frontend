@@ -1,63 +1,148 @@
 <template>
-  <div>
-    <h1>
-      Evaluator
-      {{ length }}
+  <div id="eval-main-body">
+    <h1 id="eval-title">
+      Cantus Firmus Evaluator
     </h1>
-    <select class="score-select dropdown" 
-      v-model="length"
-      v-on:change="lengthTrim()"
-    >
-      <option v-bind:value="calculateLengthValue(8)"> 8 </option>
-      <option v-bind:value="calculateLengthValue(9)"> 9 </option>
-      <option v-bind:value="calculateLengthValue(10)"> 10 </option>
-      <option v-bind:value="calculateLengthValue(11)"> 11 </option>
-      <option v-bind:value="calculateLengthValue(12)"> 12 </option>
-      <option v-bind:value="calculateLengthValue(13)"> 13 </option>
-      <option v-bind:value="calculateLengthValue(14)"> 14 </option>
-      <option v-bind:value="calculateLengthValue(15)"> 15 </option>
-      <option v-bind:value="calculateLengthValue(16)"> 16 </option>
-    </select>
-    <select v-model="mode">
-      <option value="ionian"> C Ionian </option>
-      <option value="dorian"> D Dorian </option>
-    </select>
-    <button v-on:click="reset">Clear</button>
-    <div>
-      <span v-for="position in length">
-        {{ position + 1 }}:<select v-model="notesNames[position]">
-          <!-- <option v-for="option in nameOptions[mode]">
-            {{ option }}
-          </option> -->
-          <option 
-            v-for="option in nameOptions[mode]" 
-            v-if="!penultModeCheck(position)"> {{ option }} 
-          </option>
-          <option 
-            v-for="option in nameOptions[mode]" 
-            v-if="penultModeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
-          </option>
-      </select> </span>
+    <br />
+    <div id="evaluator">
+      <div id="option-select-container">
+      Measures: 
+      <select class="eval-select option-select"
+        v-model="length"
+        v-on:change="lengthTrim()"
+      >
+        <option v-bind:value="calculateLengthValue(8)"> 8 </option>
+        <option v-bind:value="calculateLengthValue(9)"> 9 </option>
+        <option v-bind:value="calculateLengthValue(10)"> 10 </option>
+        <option v-bind:value="calculateLengthValue(11)"> 11 </option>
+        <option v-bind:value="calculateLengthValue(12)"> 12 </option>
+        <option v-bind:value="calculateLengthValue(13)"> 13 </option>
+        <option v-bind:value="calculateLengthValue(14)"> 14 </option>
+        <option v-bind:value="calculateLengthValue(15)"> 15 </option>
+        <option v-bind:value="calculateLengthValue(16)"> 16 </option>
+      </select>
+      Mode: 
+      <select v-model="mode" class="eval-select option-select">
+        <option value="ionian"> C Ionian </option>
+        <option value="dorian"> D Dorian </option>
+      </select>
+      <button v-on:click="reset" class="btn btn-clr">Clear</button>
+      </div>
+      <br />
+      <div id="note-select-container">
+        <span v-for="position in length" id="note-select-container">
+          <span id="note-number">
+            {{ position + 1 }}:
+          </span>
+          <select v-model="notesNames[position]" class="eval-select note-select">
+            <!-- <option v-for="option in nameOptions[mode]">
+              {{ option }}
+            </option> -->
+            <option 
+              v-for="option in nameOptions[mode]" 
+              v-if="!penultModeCheck(position)"> {{ option }} 
+            </option>
+            <option 
+              v-for="option in nameOptions[mode]" 
+              v-if="penultModeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
+            </option>
+          </select> 
+        </span>
+      </div>
+      <br />
+      <button v-on:click="createEvaluation" class="btn btn-eval">
+        Evaluate
+      </button>
+      <h3><ul>
+        <li v-for="error in errors" class="eval-error">
+          {{ error }}
+        </li>
+        <li v-for="suggestion in suggestions" class="eval-suggestion">
+          {{ suggestion }}
+        </li>
+      </ul></h3>
     </div>
-    <div>
-      <h3> {{ notesNames }} </h3>
-      <h3> {{ notes }} </h3>
-    </div>
-    <button v-on:click="createEvaluation">
-      Evaluate
-    </button>
-    <h3><ul>
-      <li v-for="error in errors" class="eval-error">
-        {{ error }}
-      </li>
-      <li v-for="suggestion in suggestions" class="eval-suggestion">
-        {{ suggestion }}
-      </li>
-    </ul></h3>
   </div>
 </template>
 
 <style>
+#eval-main-body {
+  padding-top: 72px;
+  padding-right: 48px;
+  padding-left: 48px;
+  margin: auto;
+  width: 55%;
+  font-size: 28px;
+}
+
+#eval-title {
+  font-size: 72px;
+  font-weight: bold;
+}
+
+#evaluator {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#option-select-container {
+  position: relative
+}
+
+.option-select {
+  margin-right: 1em;
+}
+
+.eval-select {
+  font-family: Helvetica, sans-serif;
+}
+
+#note-number {
+  position: absolute;
+  transform: translateX(-1.4em);
+  text-align: right;
+}
+
+#note-select-container {
+  position: relative;
+  width: 12.5;
+  float: left;
+}
+
+.note-select {
+  width: 3em;
+  margin-right: 2.6em;
+  margin-left: 0.25em;
+}
+
+.btn-clr {
+  font-size: 20px;
+  font-weight: bold;
+  background-color: white;
+  box-shadow: 0px 0px 6px rgb(0 0 0 / 50%);
+  margin-left: 1%;
+}
+
+.btn-clr:active {
+  transform: translateY(2px);
+  box-shadow: 0px 1px 4px rgb(0 0 0 / 50%);
+  transition: 0s;
+}
+
+.btn-eval {
+  margin-top: 1.7em;
+  font-size: 28px;
+  font-weight: bold;
+  background-color: white;
+  box-shadow: 0px 3px 6px rgb(0 0 0 / 50%);
+}
+
+.btn-eval:active {
+  transform: translateY(2px);
+  box-shadow: 0px 1px 4px rgb(0 0 0 / 50%);
+  transition: 0s;
+}
+
 .eval-error {
   color: red;
 }
@@ -108,6 +193,9 @@ export default {
       return this.notesNames.map(note => {
         return this.notesTranslator[note];
       })     
+    },
+    width () {
+      return window.innerWidth;
     }
   },
   methods: {

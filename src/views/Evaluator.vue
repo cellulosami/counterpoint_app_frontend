@@ -50,10 +50,14 @@
           </select> 
         </span>
       </div>
-      <br />
-      <button v-on:click="createEvaluation" class="btn btn-eval">
-        Evaluate
-      </button>
+      <div>
+        <button v-on:click="createEvaluation()" class="btn btn-eval">
+          Evaluate
+        </button>
+        <button v-on:click="drawStave()" class="btn btn-eval" id="btn-preview">
+          Preview
+        </button>
+      </div>
       <h3><ul>
         <li v-for="error in errors" class="eval-error">
           {{ error }}
@@ -63,6 +67,11 @@
         </li>
       </ul></h3>
     </div>
+    <br />
+    <div id="staff-container">
+        <div id="boo">
+        </div>
+      </div>
   </div>
 </template>
 
@@ -149,15 +158,17 @@
 
 .btn-eval {
   margin-top: 1.7em;
+  margin-right: 0.5em;
   font-size: 28px;
   font-weight: bold;
-  background-color: #0f4c75;
+  width: 6em;
   color: white;
   box-shadow: 0px 3px 6px rgb(0 0 0 / 50%);
+  background-color: #04914f;
 }
 
 .btn-eval:hover {
-  background-color: #14649a;
+  background-color: #04a85c;
   color: white;
 }
 
@@ -165,6 +176,14 @@
   transform: translateY(2px);
   box-shadow: 0px 1px 4px rgb(0 0 0 / 50%);
   transition: 0s;
+}
+
+#btn-preview {
+  background-color: #0f4c75;
+}
+
+#btn-preview:hover {
+  background-color: #14649a;
 }
 
 .eval-error {
@@ -178,6 +197,8 @@
 
 <script>
 import axios from "axios";
+import Vex from "vexflow";
+const VF = Vex.Flow;
 
 export default {
   data: function () {
@@ -210,6 +231,9 @@ export default {
         "D5": "d/5", 
         "E5": "e/5",      
       },
+      div: "",
+      renderer: "",
+      context: "",
     }
   },
   computed: {
@@ -222,9 +246,17 @@ export default {
       return window.innerWidth;
     }
   },
+  mounted: function () {
+    this.div = document.getElementById("boo");
+    this.renderer = new VF.Renderer(this.div, VF.Renderer.Backends.SVG);
+    this.renderer.resize(921, 232);
+    this.context = this.renderer.getContext();
+    this.group = this.context.openGroup();
+  },
   methods: {
     createEvaluation: function () {
       console.log("Evaluating...");
+      this.drawStave();
       let params = {
         notes: this.notes,
         mode: this.mode,
@@ -278,7 +310,81 @@ export default {
       if (this.notesNames.length > this.length.length) {
         this.notesNames = this.notesNames.slice(0, (this.length.length))
       }
-    }
+    },
+    drawStave: function () {
+      //setup
+      this.context.closeGroup();
+      this.context.svg.removeChild(this.group);
+      this.group = this.context.openGroup();
+      this.noteIndex = 0;
+
+      //draw first bar
+      this.addFirstStave();
+      
+      //draw remaining bars on first line
+      while (this.noteIndex < (this.notes.length / 2)) {
+        this.addAdditionalMeasure();
+      }
+
+      //draw first bar on second line
+      this.addSecondStave();
+      
+      //draw all but last bar on second line
+      while (this.noteIndex < this.notes.length - 1) {
+        this.addAdditionalMeasure();
+      }
+
+      //draw last bar on second line with double barline
+      this.staveCurrentMeasure = new Vex.Flow.Stave(
+        this.stavePreviousMeasure.width + this.stavePreviousMeasure.x,
+        this.measureOffset,
+        110
+      );
+      this.staveCurrentMeasure.setEndBarType(Vex.Flow.Barline.type.END);
+      this.draw();
+    },
+
+    addFirstStave: function () {
+      this.staveCurrentMeasure = new VF.Stave(0, 0, 150);
+      this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
+      this.draw();
+      this.measureOffset = 0;
+      this.noteIndex++;
+    },
+
+    addAdditionalMeasure: function () {
+      this.staveCurrentMeasure = new Vex.Flow.Stave(
+        this.stavePreviousMeasure.width + this.stavePreviousMeasure.x,
+        this.measureOffset,
+        110
+      );
+      this.draw();
+      this.noteIndex++;
+    },
+
+    addSecondStave: function () {
+      this.staveCurrentMeasure = new VF.Stave(0, 100, 130);
+      this.staveCurrentMeasure.addClef("treble");
+      this.draw();
+
+      this.measureOffset = 100
+      this.noteIndex++;
+    },
+
+    draw: function () {
+      this.staveCurrentMeasure.setContext(this.context).draw();
+      if (this.notes[this.noteIndex].includes("#")) {
+        this.notesCurrentMeasure = [
+          new VF.StaveNote({ keys: [this.notes[this.noteIndex]], duration: "w" }).addAccidental(0, new VF.Accidental("#")),
+        ];   
+      } else {
+        this.notesCurrentMeasure = [
+          new VF.StaveNote({ keys: [this.notes[this.noteIndex]], duration: "w" })
+        ];
+      }
+      VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
+      this.stavePreviousMeasure = this.staveCurrentMeasure;
+    },
   },
 }
 </script>

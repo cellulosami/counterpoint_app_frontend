@@ -28,6 +28,7 @@
         </select>
         <button v-on:click="clear()" class="btn btn-clr">Clear</button>
         <button v-on:click="reset()" class="btn btn-clr reset">Reset</button>
+        <button v-on:click="randomize()" class="btn btn-clr reset">Randomize</button>
       </div>
       <br />
       <div id="note-input-container">
@@ -320,6 +321,15 @@ export default {
     reset: function () {
       this.length = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
       this.notesNames = ["C4", "D4", "A4", "G4", "A4", "B4", "C5", "G4", "A4", "G4", "F4", "E4", "F4", "C4", "D4", "C4"];
+    },
+    randomize: function () {
+      let temp = this.nameOptions;
+      let mood = this.mode;
+      let result = [];
+      this.notesNames.forEach(function (name) {
+        result.push(temp[mood][Math.floor(Math.random() * temp[mood].length)]);
+      })
+      this.notesNames = result
     },
     calculateLengthValue: function (number) {
       let i = 0;

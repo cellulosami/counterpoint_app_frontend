@@ -54,24 +54,25 @@
         <button v-on:click="createEvaluation()" class="btn btn-eval">
           Evaluate
         </button>
-        <button v-on:click="drawStave()" class="btn btn-eval" id="btn-preview">
+        <button v-on:click="preview()" class="btn btn-eval" id="btn-preview">
           Preview
         </button>
       </div>
-      <h3><ul>
-        <li v-for="error in errors" class="eval-error">
-          {{ error }}
-        </li>
-        <li v-for="suggestion in suggestions" class="eval-suggestion">
-          {{ suggestion }}
-        </li>
-      </ul></h3>
     </div>
     <br />
-    <div id="staff-container">
+    <div id="results">
+      <div id="staff-container">
         <div id="boo">
         </div>
       </div>
+      <br />
+      <ul>
+      <div>
+        <li v-for="error in errors" class="error result">{{ error }}</li>
+        <li v-for="suggestion in suggestions" class="suggestion result">{{ suggestion }}</li>
+      </div>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -159,7 +160,7 @@
 .btn-eval {
   margin-top: 1.7em;
   margin-right: 0.5em;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
   width: 6em;
   color: white;
@@ -186,12 +187,42 @@
   background-color: #14649a;
 }
 
-.eval-error {
-  color: red;
+#staff-container {
+  background-color: hsl(24, 10%, 90%);
+  box-shadow: 0px 0px 8px rgb(0 0 0 / 30%);
+  border-radius: 5px;
+  padding-left: 32px;
+  height: 232px;
+  width: 984px;
+  margin: auto;
+  color: black;
 }
 
-.eval-suggestion {
-  color: yellow;
+#results {
+  background-color: white;
+  padding: 1em;
+  border-radius: 15px;
+  box-shadow: 0px 0px 8px rgb(0 0 0 / 30%);
+  width: 1048px;
+  margin: 0 auto;
+  overflow: auto;
+  margin-bottom: 4em;
+}
+
+.result {
+  position: relative;
+  width: 40%;
+  float: left;
+  margin-bottom: 0.25em;
+  margin-right: 10%;
+}
+
+.error {
+  color: rgb(175, 13, 37);
+}
+
+.suggestion {
+  color: #fc9e4f;
 }
 </style>
 
@@ -205,8 +236,8 @@ export default {
     return {
       length: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
       mode: "ionian",
-      errors: [],
-      suggestions: [],
+      errors: ["No errors."],
+      suggestions: ["No suggestions."],
       //notesNames: ["", "", "", "", "", "", "", ""],
       notesNames: ["C4", "D4", "A4", "G4", "A4", "B4", "C5", "G4", "A4", "G4", "F4", "E4", "F4", "C4", "D4", "C4"],
       nameOptions: {
@@ -310,6 +341,11 @@ export default {
       if (this.notesNames.length > this.length.length) {
         this.notesNames = this.notesNames.slice(0, (this.length.length))
       }
+    },
+    preview: function () {
+      this.errors = [],
+      this.suggestions = [],
+      this.drawStave();
     },
     drawStave: function () {
       //setup

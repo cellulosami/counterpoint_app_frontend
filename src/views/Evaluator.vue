@@ -111,6 +111,8 @@
 #note-input-container {
   position: relative;
   right: 5em;
+  margin-top: 1em;
+  margin-bottom: 5em;
 }
 
 #note-select-container {
@@ -207,14 +209,6 @@
   margin: 0 auto;
   overflow: auto;
   margin-bottom: 4em;
-}
-
-.result {
-  position: relative;
-  width: 40%;
-  float: left;
-  margin-bottom: 0.25em;
-  margin-right: 10%;
 }
 
 .error {

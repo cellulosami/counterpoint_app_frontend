@@ -38,16 +38,8 @@
             {{ position + 1 }}:
           </span>
           <select v-model="notesNames[position]" class="eval-select note-select">
-            <!-- <option v-for="option in nameOptions[mode]">
-              {{ option }}
-            </option> -->
-            <option 
-              v-for="option in nameOptions[mode]" 
-              v-if="!penultModeCheck(position)"> {{ option }} 
-            </option>
-            <option 
-              v-for="option in nameOptions[mode]" 
-              v-if="penultModeCheck(position)"> {{ option == "C4" ? "C♯4": option }} 
+            <option v-for="option in nameOptions[mode]"> 
+              {{ sharpAdder(option, position, mode) }} 
             </option>
           </select> 
         </span>
@@ -264,6 +256,8 @@ export default {
         "F5": "f/5",
         "G5": "g/5",
         "A5": "a/5",
+        "B5": "b/5",
+        "C6": "c/6",
       },
       div: "",
       renderer: "",
@@ -307,18 +301,6 @@ export default {
           console.log("aww");
         });
     },
-    penultModeCheck: function (position) {
-      if (this.mode == "dorian" && position == this.length[this.length.length - 2]) {
-        return true;
-      }
-      return false;
-    },
-    // antepenultModeCheck: function (position) {
-    //   if (this.mode == "aeolian" && position == this.length[this.length.length - 3]) {
-    //     return true;
-    //   }
-    //   return false;
-    // },
     clear: function () {
       this.notesNames = []
       let i = 0;
@@ -359,6 +341,24 @@ export default {
       this.errors = [],
       this.suggestions = [],
       this.drawStave();
+    },
+    sharpAdder: function(option, position, mode) {
+      // if (this.length.length - 2 === position) {
+      //   console.log(this.length.length);
+      //   console.log(option === "C4");
+      //   console.log(this.length.length -2 === position);
+      //   console.log(mode === "dorian");
+      // }      
+      let params = [option, position, mode];
+      if (mode === "dorian" && position === this.length.length - 2 && option ==="C4") {
+        return "C♯4";
+      } else if (mode === "aeolian" && position === this.length.length - 3 && option ==="F4") {
+        return "F♯4";
+      } else if (mode === "aeolian" && position === this.length.length - 2 && option ==="F4") {
+        return "G♯4";
+      } else {
+        return option;
+      }
     },
     drawStave: function () {
       //setup

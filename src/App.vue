@@ -77,6 +77,7 @@ select {
   background-color: #fff;
   background-image: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
 	background-repeat: no-repeat, repeat;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
 }
 </style>
 

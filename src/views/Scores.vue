@@ -20,10 +20,13 @@
         Mode:
         <select class="score-select dropdown" v-model="inputMode">
           <option value="ionian">
-            Ionian
+            C Ionian
           </option>
           <option value="dorian">
-            Dorian
+            D Dorian
+          </option>
+          <option value="aeolian">
+            A Aeolian
           </option>
         </select>
         </h5>
@@ -291,6 +294,12 @@ export default {
       switch (this.currentScore.notes[this.currentScore.notes.length - 2]) {
         case "c#/4":
           this.currentScore.notes[this.currentScore.notes.length - 2] = "cSharp/4"
+        case "g#/4":
+          this.currentScore.notes[this.currentScore.notes.length - 2] = "gSharp/4"
+      }
+      switch (this.currentScore.notes[this.currentScore.notes.length - 3]) {
+        case "f#/4":
+          this.currentScore.notes[this.currentScore.notes.length - 3] = "fSharp/4"
       }
       this.currentNote = 0
       this.playNote();

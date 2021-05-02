@@ -25,6 +25,7 @@
         <select v-model="mode" class="eval-select option-select">
           <option value="ionian"> C Ionian </option>
           <option value="dorian"> D Dorian </option>
+          <option value="aeolian"> A Aeolian </option>
         </select>
         <button v-on:click="clear()" class="btn btn-clr">Clear</button>
         <button v-on:click="reset()" class="btn btn-clr reset">Reset</button>
@@ -239,6 +240,7 @@ export default {
       nameOptions: {
         ionian: ["E5", "D5", "C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4", "B3", "A3", "G3", "F3", "E3"],
         dorian: ["F5", "E5", "D5", "C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4", "B3", "A3", "G3", "F3"],
+        aeolian: ["C6", "B5", "A5", "G5", "F5", "E5", "D5", "C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4"],
       },
       notesTranslator: {
         "E3": "e/3", 
@@ -250,13 +252,18 @@ export default {
         "C♯4": "c#/4",
         "D4": "d/4", 
         "E4": "e/4", 
-        "F4": "f/4", 
-        "G4": "g/4", 
+        "F4": "f/4",
+        "F♯4": "f#/4",
+        "G4": "g/4",
+        "G♯4": "g#/4", 
         "A4": "a/4", 
         "B4": "b/4", 
         "C5": "c/5", 
         "D5": "d/5", 
-        "E5": "e/5",      
+        "E5": "e/5",
+        "F5": "f/5",
+        "G5": "g/5",
+        "A5": "a/5",
       },
       div: "",
       renderer: "",

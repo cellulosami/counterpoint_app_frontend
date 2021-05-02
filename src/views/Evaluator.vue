@@ -392,7 +392,6 @@ export default {
       this.staveCurrentMeasure.setEndBarType(Vex.Flow.Barline.type.END);
       this.draw();
     },
-
     addFirstStave: function () {
       this.staveCurrentMeasure = new VF.Stave(0, 0, 150);
       this.staveCurrentMeasure.addClef("treble").addTimeSignature("4/4");
@@ -400,7 +399,6 @@ export default {
       this.measureOffset = 0;
       this.noteIndex++;
     },
-
     addAdditionalMeasure: function () {
       this.staveCurrentMeasure = new Vex.Flow.Stave(
         this.stavePreviousMeasure.width + this.stavePreviousMeasure.x,
@@ -410,7 +408,6 @@ export default {
       this.draw();
       this.noteIndex++;
     },
-
     addSecondStave: function () {
       this.staveCurrentMeasure = new VF.Stave(0, 100, 130);
       this.staveCurrentMeasure.addClef("treble");
@@ -419,7 +416,6 @@ export default {
       this.measureOffset = 100
       this.noteIndex++;
     },
-
     draw: function () {
       this.staveCurrentMeasure.setContext(this.context).draw();
       if (this.notes[this.noteIndex].includes("#")) {

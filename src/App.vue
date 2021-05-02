@@ -70,5 +70,13 @@ html {
   /* background-color: #3282b8; */
   background-color: #eff8ff;
 }
+
+select {
+  border-radius: .25em;
+  color: #444;
+  background-color: #fff;
+  background-image: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+	background-repeat: no-repeat, repeat;
+}
 </style>
 

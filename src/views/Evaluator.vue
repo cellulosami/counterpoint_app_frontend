@@ -210,6 +210,7 @@
   margin: 0 auto;
   overflow: auto;
   margin-bottom: 4em;
+  font-family: Palatino, serif;
 }
 
 .error {
@@ -314,8 +315,9 @@ export default {
     clear: function () {
       this.notesNames = []
       let i = 0;
-      while (i < this.lengt.length) {
+      while (i < this.length.length) {
         this.notesNames.push("");
+        i++;
       }
     },
     reset: function () {

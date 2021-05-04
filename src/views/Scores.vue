@@ -31,7 +31,7 @@
         </select>
         </h5>
         <button 
-          v-on:click="scoresCreate" 
+          v-on:click="scoresCreate()" 
           class="btn" 
           id="generate"
           v-if="currentlyPlaying === false"
@@ -61,6 +61,9 @@
         </button>
       </div>
       <div id="staff-container">
+        <div id="staff-loader" v-bind:id="loaderId">
+          <div class="loader" v-bind:class="loaderClass"></div>
+        </div>
         <div id="boo">
         </div>
       </div>
@@ -92,6 +95,54 @@
   height: 232px;
   width: 984px;
   margin: auto;
+}
+
+#staff-loading {
+  position: absolute;
+  transform: translateX(-32px);
+  background-color: hsl(24, 10%, 90%);
+  border-radius: 5px;
+  height: 232px;
+  width: 984px;
+  margin: auto;
+  transition: ease 0.3s;
+}
+
+.loader {
+  margin: 60px auto;
+  border: 12px solid #eff8ff; /* Light grey */
+  border-top: 12px solid #0f4c75; /* Blue */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+  transition: ease 0.3s;
+}
+
+.active {
+  transition: ease 0.3s;
+}
+
+.inactive {
+  border: 16px solid #f3f3f300; /* Light grey */
+  border-top: 16px solid #3498db00; /* Blue */
+  transition: ease 0.3s;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#staff-inactive {
+  position: absolute;
+  transform: translateX(-32px);
+  background-color: hsla(24, 10%, 90%, 0);
+  border-radius: 5px;
+  height: 232px;
+  width: 984px;
+  margin: auto;
+  transition: ease 0.3s;
 }
 
 #generator-container {
@@ -151,7 +202,7 @@
 }
 
 .btn:hover {
-  transition: 0.2s ease;
+  transition: 0.3s ease;
 }
 
 .btn:active {
@@ -169,7 +220,6 @@ import axios from "axios";
 import Vex from "vexflow";
 const VF = Vex.Flow;
 
-console.log(screen.width);
 export default {
 
   data: function () {
@@ -188,6 +238,8 @@ export default {
       measureOffset: 0,
       group: "",
       currentlyPlaying: false,
+      loaderId: "staff-inactive",
+      loaderClass: "inactive"
     }
   },
   mounted: function () {
@@ -204,12 +256,26 @@ export default {
         length: parseInt(this.inputLength),
         mode: this.inputMode
       }
-      axios
+      this.loaderId = "staff-loading";
+      this.loaderClass = "active";
+      this.sleep(300).then(() => {
+        axios
         .post("http://localhost:3000/api/scores", params)
         .then(response => {
           this.currentScore = response.data;
           this.drawStave();
+          this.sleep(600).then(() => {
+            this.loaderId = "staff-inactive";
+            this.loaderClass = "inactive";
+          })
         })
+        .catch(error => {
+          this.sleep(600).then(() => {
+            this.loaderId = "staff-inactive";
+            this.loaderClass = "inactive";
+          })
+        })
+      });
     },
 
     drawStave: function () {
@@ -329,7 +395,7 @@ export default {
 
     sleep: function (ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    },
   }
 }
 </script>

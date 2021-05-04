@@ -382,6 +382,18 @@ export default {
       this.notesNames.forEach(function (name) {
         result.push(temp[mood][Math.floor(Math.random() * temp[mood].length)]);
       })
+      console.log(result);
+      console.log(mood);
+      console.log(result[result.length - 2]);
+      if (mood === "dorian" && result[result.length - 2] === "C4") {
+        result[result.length - 2] = "C♯4";
+      }
+      if (mood === "aeolian" && result[result.length - 3] === "F4") {
+        result[result.length - 3] = "F♯4";
+      }
+      if (mood === "aeolian" && result[result.length - 2] === "G4") {
+        result[result.length - 2] = "G♯4";
+      }
       this.notesNames = result
     },
     calculateLengthValue: function (number) {
@@ -417,7 +429,7 @@ export default {
         return "C♯4";
       } else if (mode === "aeolian" && position === this.length.length - 3 && option ==="F4") {
         return "F♯4";
-      } else if (mode === "aeolian" && position === this.length.length - 2 && option ==="F4") {
+      } else if (mode === "aeolian" && position === this.length.length - 2 && option ==="G4") {
         return "G♯4";
       } else {
         return option;

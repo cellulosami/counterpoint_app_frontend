@@ -69,7 +69,7 @@
 
 .about {
   margin: 0 auto;
-  margin-top: 3em;
+  margin-top: 1.5em;
   max-width: 50em;
   line-height: 1.5;
   padding: 4em 1em;

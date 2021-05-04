@@ -40,6 +40,7 @@
 }
 
 #everything {
+   flex-grow: 1;
   background-color: #eff8ff;
 }
 
@@ -66,9 +67,19 @@
   transition: ease 0.2s;
 }
 
+html, body {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
 html {
   /* background-color: #3282b8; */
   background-color: #eff8ff;
+}
+
+body {
+  flex-shrink: 0;
 }
 
 select {
@@ -78,6 +89,7 @@ select {
   background-image: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
 	background-repeat: no-repeat, repeat;
   box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+
 }
 </style>
 

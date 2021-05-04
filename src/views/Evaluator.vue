@@ -283,7 +283,6 @@ export default {
   },
   methods: {
     createEvaluation: function () {
-      console.log("Evaluating...");
       this.drawStave();
       let params = {
         notes: this.notes,
@@ -293,12 +292,10 @@ export default {
       axios
         .post("api/errors", params)
         .then(response => {
-          console.log(response.data);
           this.errors = response.data.errors;
           this.suggestions = response.data.suggestions;
         })
         .catch(error => {
-          console.log("aww");
         });
     },
     clear: function () {
@@ -332,7 +329,6 @@ export default {
       return result;
     },
     lengthTrim: function () {
-      console.log("trim");
       if (this.notesNames.length > this.length.length) {
         this.notesNames = this.notesNames.slice(0, (this.length.length))
       }
@@ -342,13 +338,7 @@ export default {
       this.suggestions = [],
       this.drawStave();
     },
-    sharpAdder: function(option, position, mode) {
-      // if (this.length.length - 2 === position) {
-      //   console.log(this.length.length);
-      //   console.log(option === "C4");
-      //   console.log(this.length.length -2 === position);
-      //   console.log(mode === "dorian");
-      // }      
+    sharpAdder: function(option, position, mode) {    
       let params = [option, position, mode];
       if (mode === "dorian" && position === this.length.length - 2 && option ==="C4") {
         return "C♯4";

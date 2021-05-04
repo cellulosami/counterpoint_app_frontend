@@ -105,33 +105,37 @@
   height: 232px;
   width: 984px;
   margin: auto;
-  transition: ease 0.3s;
+  transition: ease 0.2s;
 }
 
 .loader {
-  margin: 60px auto;
-  border: 12px solid #eff8ff; /* Light grey */
-  border-top: 12px solid #0f4c75; /* Blue */
+  position: absolute;
+  margin: 76px 452px;
+  border: 2px solid #eff8ff; /* Light grey */
+  border-top: 2px solid #0f4c75; /* Blue */
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  animation: spin 2s linear infinite;
-  transition: ease 0.3s;
+  width: 80px;
+  height: 80px;
+  animation: spin 1.5s linear infinite;
 }
 
 .active {
-  transition: ease 0.3s;
+  transition: ease 0.2s;
 }
 
 .inactive {
-  border: 16px solid #f3f3f300; /* Light grey */
-  border-top: 16px solid #3498db00; /* Blue */
-  transition: ease 0.3s;
+  border: 2px solid #f3f3f300; /* Light grey */
+  border-top: 2px solid #3498db00; /* Blue */
+  transition: ease 1s;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
 }
 
 #staff-inactive {
@@ -142,7 +146,7 @@
   height: 232px;
   width: 984px;
   margin: auto;
-  transition: ease 0.3s;
+  transition: ease 1s;
 }
 
 #generator-container {
@@ -374,7 +378,6 @@ export default {
     },
 
     playNote: function () {
-      console.log(this.currentScore.notes[this.currentNote]);
       var audio = new Audio(require(`../assets/short_notes/${this.currentScore.notes[this.currentNote]}.mp3`))
       audio.play();
       this.currentNote++;

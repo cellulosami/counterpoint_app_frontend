@@ -113,6 +113,7 @@ strong {
 #a-lindsay {
   text-align: center;
   padding: 8px;
+  margin-bottom: 1em;
 }
 
 </style>

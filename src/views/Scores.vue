@@ -243,7 +243,7 @@ export default {
       group: "",
       currentlyPlaying: false,
       loaderId: "staff-inactive",
-      loaderClass: "inactive"
+      loaderClass: "inactive",
     }
   },
   mounted: function () {

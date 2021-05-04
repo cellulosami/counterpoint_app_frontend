@@ -56,6 +56,9 @@
     <br />
     <div id="results">
       <div id="staff-container">
+        <div id="staff-loader" v-bind:id="loaderId">
+          <div class="loader" v-bind:class="loaderClass"></div>
+        </div>
         <div id="boo">
         </div>
       </div>
@@ -194,6 +197,58 @@
   color: black;
 }
 
+#staff-loading {
+  position: absolute;
+  transform: translateX(-32px);
+  background-color: hsl(24, 10%, 90%);
+  border-radius: 5px;
+  height: 232px;
+  width: 984px;
+  margin: auto;
+  transition: ease 0.2s;
+}
+
+.loader {
+  position: absolute;
+  margin: 76px 452px;
+  border: 2px solid #eff8ff; /* Light grey */
+  border-top: 2px solid #0f4c75; /* Blue */
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1.5s linear infinite;
+}
+
+.active {
+  transition: ease 0.2s;
+}
+
+.inactive {
+  border: 2px solid #f3f3f300; /* Light grey */
+  border-top: 2px solid #3498db00; /* Blue */
+  transition: ease 1s;
+}
+
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+#staff-inactive {
+  position: absolute;
+  transform: translateX(-32px);
+  background-color: hsla(24, 10%, 90%, 0);
+  border-radius: 5px;
+  height: 232px;
+  width: 984px;
+  margin: auto;
+  transition: ease 1s;
+}
+
 #results {
   background-color: white;
   padding: 1em;
@@ -204,6 +259,7 @@
   overflow: auto;
   margin-bottom: 4em;
   font-family: Palatino, serif;
+  transition: ease 0.2s;
 }
 
 .error {
@@ -262,6 +318,8 @@ export default {
       div: "",
       renderer: "",
       context: "",
+      loaderId: "staff-inactive",
+      loaderClass: "inactive",
     }
   },
   computed: {
@@ -283,20 +341,27 @@ export default {
   },
   methods: {
     createEvaluation: function () {
-      this.drawStave();
-      let params = {
-        notes: this.notes,
-        mode: this.mode,
-      };
-
-      axios
-        .post("api/errors", params)
-        .then(response => {
-          this.errors = response.data.errors;
-          this.suggestions = response.data.suggestions;
+      this.loaderId = "staff-loading";
+      this.loaderClass = "active";
+      this.sleep(300).then(() => {
+        this.drawStave();
+        let params = {
+          notes: this.notes,
+          mode: this.mode,
+        };
+        this.sleep(600).then(() => {
+          this.loaderId = "staff-inactive";
+          this.loaderClass = "inactive";
         })
-        .catch(error => {
-        });
+        axios
+          .post("api/errors", params)
+          .then(response => {
+            this.errors = response.data.errors;
+            this.suggestions = response.data.suggestions;
+          })
+          .catch(error => {
+          });
+      })
     },
     clear: function () {
       this.notesNames = []
@@ -334,9 +399,17 @@ export default {
       }
     },
     preview: function () {
-      this.errors = [],
-      this.suggestions = [],
-      this.drawStave();
+      this.loaderId = "staff-loading";
+      this.loaderClass = "active";
+      this.sleep(300).then(() => {
+        this.errors = [],
+        this.suggestions = [],
+        this.drawStave();
+      })
+      this.sleep(900).then(() => {
+          this.loaderId = "staff-inactive";
+          this.loaderClass = "inactive";
+        })
     },
     sharpAdder: function(option, position, mode) {    
       let params = [option, position, mode];
@@ -419,6 +492,9 @@ export default {
       }
       VF.Formatter.FormatAndDraw(this.context, this.staveCurrentMeasure, this.notesCurrentMeasure);
       this.stavePreviousMeasure = this.staveCurrentMeasure;
+    },
+    sleep: function (ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
     },
   },
 }

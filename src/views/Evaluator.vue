@@ -292,7 +292,7 @@ export default {
           this.loaderClass = "inactive";
         })
         axios
-          .post("api/errors", params)
+          .post("https://why-cant-i-firmus.herokuapp.com/api/errors", params)
           .then(response => {
             this.errors = response.data.errors;
             this.suggestions = response.data.suggestions;

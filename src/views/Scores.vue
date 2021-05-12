@@ -202,7 +202,7 @@ export default {
       this.loaderClass = "active";
       this.sleep(300).then(() => {
         axios
-        .post("http://localhost:3000/api/scores", params)
+        .post("https://why-cant-i-firmus.herokuapp.com/api/scores", params)
         .then(response => {
           this.currentScore = response.data;
           this.drawStave();

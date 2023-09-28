@@ -160,6 +160,27 @@ import Vex from "vexflow";
 const VF = Vex.Flow;
 import StaffContainer from "@/components/StaffContainer.vue";
 
+function preloadAudio(notes, length, currentNote) {
+  let audios = []
+  notes.forEach((note) => {
+    let audio = new Audio(require(`../assets/short_notes/${note}.mp3`))
+    audios.push(audio)
+  })
+
+  playback(notes, length, currentNote, audios);
+}
+
+function playback(notes, length, currentNote, audios) {
+  let audio = audios[currentNote]
+  currentNote++
+
+  audio.play();
+  audio.addEventListener('ended', function() {
+    if (currentNote < length)
+    playback(notes, length, currentNote, audios);
+  })
+}
+
 export default {
 
   data: function () {
@@ -296,41 +317,27 @@ export default {
     },
 
     playback: function () {
+      let length = this.currentScore.notes.length
+
       if (this.currentScore.notes) {
         this.currentlyPlaying = true; //turns off play button
       }
-      switch (this.currentScore.notes[this.currentScore.notes.length - 2]) {
+      switch (this.currentScore.notes[length - 2]) {
         case "c#/4":
-          this.currentScore.notes[this.currentScore.notes.length - 2] = "cSharp/4";
+          this.currentScore.notes[length - 2] = "cSharp/4";
           break;
         case "g#/4":
-          this.currentScore.notes[this.currentScore.notes.length - 2] = "gSharp/4";
+          this.currentScore.notes[length - 2] = "gSharp/4";
       }
-      switch (this.currentScore.notes[this.currentScore.notes.length - 3]) {
+      switch (this.currentScore.notes[length - 3]) {
         case "f#/4":
-          this.currentScore.notes[this.currentScore.notes.length - 3] = "fSharp/4";
+          this.currentScore.notes[length - 3] = "fSharp/4";
       }
       this.currentNote = 0
-      this.playNote();
-      this.playScore();
-    },
+      preloadAudio(this.currentScore.notes, length, this.currentNote);
 
-    playNote: function () {
-      var audio = new Audio(require(`../assets/short_notes/${this.currentScore.notes[this.currentNote]}.mp3`))
-      audio.play();
-      this.currentNote++;
-    },
-
-    playScore: function () {
-      this.sleep(900).then(() => {
-        this.playNote();
-        if (this.currentNote < (this.currentScore.notes.length)) {
-          this.playScore();
-        } else {
-          this.sleep(900).then(() => {
-            this.currentlyPlaying = false; //turns play button back on
-          })
-        }
+      this.sleep(1050 * length).then(() => {
+        this.currentlyPlaying = false; //turns play button back on
       });
     },
 

@@ -52,9 +52,6 @@
 .navbar-brand {
   color: white;
 }
-.navbar-brand:hover {
-  color: white;
-}
 
 .router-link {
   color: rgb(187, 187, 187);

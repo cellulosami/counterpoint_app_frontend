@@ -202,7 +202,7 @@ export default {
       this.loaderClass = "active";
       this.sleep(300).then(() => {
         axios
-        .post("https://why-cant-i-firmus-backend-8f870cb50d42.herokuapp.com/api/scores", params)
+        .post("/api/scores", params)
         .then(response => {
           this.currentScore = response.data;
           this.drawStave();
